@@ -1,0 +1,17 @@
+{
+  "name": "FlashMaster Mobile Flashcards",
+  "short_name": "Flashcards",
+  "description": "Simple mobile app to practice predetermined flashcard questions",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#0f172a",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/card-icon.svg",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml"
+    }
+  ]
+}
