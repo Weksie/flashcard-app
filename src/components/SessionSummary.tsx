@@ -13,7 +13,17 @@ import {
 } from 'lucide-react'
 
 export const SessionSummary: React.FC = () => {
-  const { sessionResult, setScreen, selectDeck, setActiveCards } = useDeck()
+  const {
+    sessionResult,
+    setSessionResult,
+    setScreen,
+    selectDeck,
+    setActiveCards,
+    decks,
+    resetDeckMastery,
+    resetCardMastery,
+    getUnmasteredCount,
+  } = useDeck()
 
   useEffect(() => {
     if (!sessionResult) return
@@ -50,6 +60,9 @@ export const SessionSummary: React.FC = () => {
   const { deckId, deckTitle, total, masteredCards, learningCards } = sessionResult
   const scorePercent = total > 0 ? Math.round((masteredCards.length / total) * 100) : 0
 
+  const targetDeck = decks.find((d) => d.id === deckId)
+  const remainingInDeck = targetDeck ? getUnmasteredCount(targetDeck) : 0
+
   // Review only missed cards
   const handleReviewMissed = () => {
     if (learningCards.length === 0) return
@@ -57,9 +70,30 @@ export const SessionSummary: React.FC = () => {
     setScreen('study')
   }
 
-  // Restart whole deck
-  const handleRestartFull = () => {
+  // Continue with remaining unmastered in deck
+  const handleContinueRemaining = () => {
     selectDeck(deckId)
+  }
+
+  // Reset entire deck and start fresh
+  const handleResetAndRestartDeck = () => {
+    resetDeckMastery(deckId)
+    setTimeout(() => {
+      selectDeck(deckId, false, true)
+    }, 10)
+  }
+
+  // Undo / reset mastery for a single card directly from summary
+  const handleResetCard = (cardId: string) => {
+    resetCardMastery(cardId)
+    const cardToMove = masteredCards.find((c) => c.id === cardId)
+    if (cardToMove) {
+      setSessionResult({
+        ...sessionResult,
+        masteredCards: masteredCards.filter((c) => c.id !== cardId),
+        learningCards: [...learningCards, cardToMove],
+      })
+    }
   }
 
   return (
@@ -79,7 +113,7 @@ export const SessionSummary: React.FC = () => {
           {scorePercent}%
         </div>
         <div className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-4">
-          Mestringsgrad
+          Mestringsgrad i denne session
         </div>
 
         <div className="grid grid-cols-2 gap-3 pt-3 border-t border-slate-800">
@@ -89,6 +123,7 @@ export const SessionSummary: React.FC = () => {
               <span className="text-xs font-bold">Mestrede</span>
             </div>
             <div className="text-xl font-bold text-white">{masteredCards.length}</div>
+            <div className="text-[10px] text-slate-400 mt-0.5">Stilles ikke igen</div>
           </div>
 
           <div className="bg-rose-500/10 border border-rose-500/20 rounded-2xl p-3">
@@ -97,6 +132,7 @@ export const SessionSummary: React.FC = () => {
               <span className="text-xs font-bold">Skal øves</span>
             </div>
             <div className="text-xl font-bold text-white">{learningCards.length}</div>
+            <div className="text-[10px] text-slate-400 mt-0.5">Stilles i næste runde</div>
           </div>
         </div>
       </div>
@@ -114,12 +150,22 @@ export const SessionSummary: React.FC = () => {
           </button>
         )}
 
+        {remainingInDeck > 0 && (
+          <button
+            onClick={handleContinueRemaining}
+            className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-2xl bg-indigo-600 hover:bg-indigo-500 active:scale-98 text-white text-sm font-semibold transition-all cursor-pointer shadow-md"
+          >
+            <ArrowRight className="w-4 h-4" />
+            <span>Fortsæt med resterende spørgsmål ({remainingInDeck} tilbage)</span>
+          </button>
+        )}
+
         <button
-          onClick={handleRestartFull}
-          className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-2xl bg-slate-800 hover:bg-slate-750 active:scale-98 text-white text-sm font-semibold border border-slate-700 transition-all cursor-pointer"
+          onClick={handleResetAndRestartDeck}
+          className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-2xl bg-slate-800 hover:bg-slate-750 active:scale-98 text-slate-200 text-sm font-semibold border border-slate-700 transition-all cursor-pointer"
         >
-          <RotateCcw className="w-4 h-4" />
-          <span>Genstart hele sættet</span>
+          <RotateCcw className="w-4 h-4 text-amber-400" />
+          <span>Nulstil hele emnet & start forfra ({targetDeck?.cards.length || total} spørgsmål)</span>
         </button>
 
         <button
@@ -133,22 +179,39 @@ export const SessionSummary: React.FC = () => {
 
       {/* Card Breakdown List */}
       <div className="mb-8">
-        <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3 px-1">
-          Gennemgang af spørgsmål
-        </h3>
+        <div className="flex items-center justify-between mb-3 px-1">
+          <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400">
+            Gennemgang af spørgsmål
+          </h3>
+          <span className="text-[11px] text-slate-500">
+            Tryk på ↺ for at nulstille et spørgsmål
+          </span>
+        </div>
+
         <div className="space-y-2">
           {masteredCards.map((c) => (
             <div
               key={`mastered-${c.id}`}
-              className="bg-slate-900/90 border border-emerald-500/20 rounded-xl p-3 flex items-start gap-3"
+              className="bg-slate-900/90 border border-emerald-500/20 rounded-xl p-3 flex items-start gap-3 justify-between"
             >
-              <div className="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center flex-shrink-0 mt-0.5">
-                <Check className="w-3.5 h-3.5" />
+              <div className="flex items-start gap-3 flex-1 min-w-0">
+                <div className="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <Check className="w-3.5 h-3.5" />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <p className="text-xs font-medium text-slate-200">{c.question}</p>
+                  <p className="text-xs text-emerald-400/90 font-semibold mt-0.5">{c.answer}</p>
+                </div>
               </div>
-              <div className="min-w-0 flex-1">
-                <p className="text-xs font-medium text-slate-200">{c.question}</p>
-                <p className="text-xs text-emerald-400/90 font-semibold mt-0.5">{c.answer}</p>
-              </div>
+
+              <button
+                onClick={() => handleResetCard(c.id)}
+                className="flex items-center gap-1 text-[11px] font-semibold text-slate-400 hover:text-amber-400 px-2 py-1 rounded-lg bg-slate-800 hover:bg-amber-400/10 border border-slate-700 hover:border-amber-400/30 transition-all cursor-pointer flex-shrink-0 ml-2"
+                title="Nulstil dette spørgsmål så det stilles igen"
+              >
+                <RotateCcw className="w-3 h-3 text-amber-400" />
+                <span>Nulstil</span>
+              </button>
             </div>
           ))}
 

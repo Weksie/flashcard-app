@@ -13,7 +13,16 @@ import type { Flashcard } from '../types'
 import { shuffleArray } from '../utils/shuffle'
 
 export const FlashcardView: React.FC = () => {
-  const { activeDeck, activeCards, markCardMastery, setScreen, setSessionResult } = useDeck()
+  const {
+    activeDeck,
+    activeCards,
+    markCardMastery,
+    resetDeckMastery,
+    selectDeck,
+    setScreen,
+    setSessionResult,
+    masteredIds,
+  } = useDeck()
 
   const [cards, setCards] = useState<Flashcard[]>(() => (activeCards ? [...activeCards] : []))
   const [currentIndex, setCurrentIndex] = useState(0)
@@ -174,15 +183,43 @@ export const FlashcardView: React.FC = () => {
   }, [])
 
   if (!currentCard) {
+    const isCompleted = activeDeck && activeDeck.cards.length > 0 && activeDeck.cards.every((c) => !!masteredIds[c.id])
+
     return (
-      <div className="flex-1 flex flex-col items-center justify-center p-6 text-center">
-        <p className="text-slate-400 mb-4">No flashcards available in this deck.</p>
-        <button
-          onClick={() => setScreen('decks')}
-          className="px-4 py-2 rounded-xl bg-indigo-600 text-white text-sm font-semibold"
-        >
-          Return to Decks
-        </button>
+      <div className="flex-1 flex flex-col items-center justify-center p-6 text-center max-w-sm mx-auto">
+        <div className="w-16 h-16 rounded-3xl bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-emerald-400 mb-4 shadow-xl shadow-emerald-500/10">
+          <Check className="w-8 h-8" />
+        </div>
+        <h2 className="text-xl font-bold text-white mb-2">
+          {isCompleted ? 'Alle spørgsmål er mestret! 🎉' : 'Ingen spørgsmål tilbage'}
+        </h2>
+        <p className="text-xs text-slate-400 mb-6 leading-relaxed">
+          {isCompleted
+            ? `Du har mestret alle ${activeDeck.cards.length} spørgsmål i dette emne. Mestrede spørgsmål stilles ikke igen, medmindre du nulstiller dem.`
+            : 'Der er ingen udestående spørgsmål i denne omgang.'}
+        </p>
+        <div className="w-full space-y-2.5">
+          {activeDeck && (
+            <button
+              onClick={() => {
+                resetDeckMastery(activeDeck.id)
+                setTimeout(() => {
+                  selectDeck(activeDeck.id, false, true)
+                }, 10)
+              }}
+              className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-500 hover:to-amber-500 active:scale-98 text-white text-xs sm:text-sm font-bold shadow-lg shadow-orange-600/20 transition-all cursor-pointer"
+            >
+              <RotateCw className="w-4 h-4" />
+              <span>Nulstil mestrede & start forfra</span>
+            </button>
+          )}
+          <button
+            onClick={() => setScreen('decks')}
+            className="w-full py-2.5 px-4 rounded-xl bg-slate-800 hover:bg-slate-750 text-slate-300 hover:text-white text-xs font-semibold transition-colors cursor-pointer"
+          >
+            Tilbage til oversigt
+          </button>
+        </div>
       </div>
     )
   }
@@ -206,12 +243,17 @@ export const FlashcardView: React.FC = () => {
 
         <div className="text-center flex-1 min-w-0 px-2">
           <h2 className="text-sm font-bold text-white truncate">
-            {activeDeck?.title || 'Practice Deck'}
+            {activeDeck?.title || 'Træning'}
           </h2>
-          <div className="flex items-center justify-center gap-1.5 text-xs text-slate-400 font-medium">
+          <div className="flex items-center justify-center gap-1 text-xs text-slate-400 font-medium">
             <span>
-              {currentIndex + 1} of {cards.length}
+              Kort {currentIndex + 1} af {cards.length}
             </span>
+            {activeDeck && activeDeck.cards.length > cards.length && (
+              <span className="text-[10px] text-amber-400/90 font-normal">
+                ({activeDeck.cards.length - cards.length} mestrede udeladt)
+              </span>
+            )}
           </div>
         </div>
 

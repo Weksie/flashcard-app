@@ -56,12 +56,16 @@ export const DeckProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const activeDeck = decks.find((d) => d.id === activeDeckId) || null
 
-  const selectDeck = (deckId: string, shuffle: boolean = false) => {
+  const selectDeck = (deckId: string, shuffle: boolean = false, forceAll: boolean = false) => {
     const target = decks.find((d) => d.id === deckId)
     if (target) {
       setActiveDeckId(deckId)
-      // Inject saved mastery state into cards
-      let mapped = target.cards.map((card) => ({
+      // Only include cards that are not mastered, unless forceAll is explicitly set
+      const cardsToUse = forceAll
+        ? target.cards
+        : target.cards.filter((card) => !masteredIds[card.id])
+
+      let mapped = cardsToUse.map((card) => ({
         ...card,
         isMastered: !!masteredIds[card.id],
       }))
@@ -75,13 +79,30 @@ export const DeckProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }
 
   const markCardMastery = (cardId: string, isMastered: boolean) => {
-    setMasteredIds((prev) => ({
-      ...prev,
-      [cardId]: isMastered,
-    }))
+    setMasteredIds((prev) => {
+      const updated = { ...prev }
+      if (isMastered) {
+        updated[cardId] = true
+      } else {
+        delete updated[cardId]
+      }
+      return updated
+    })
 
     setActiveCards((prev) =>
       prev.map((c) => (c.id === cardId ? { ...c, isMastered } : c))
+    )
+  }
+
+  const resetCardMastery = (cardId: string) => {
+    setMasteredIds((prev) => {
+      const updated = { ...prev }
+      delete updated[cardId]
+      return updated
+    })
+
+    setActiveCards((prev) =>
+      prev.map((c) => (c.id === cardId ? { ...c, isMastered: false } : c))
     )
   }
 
@@ -100,9 +121,24 @@ export const DeckProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   }
 
+  const resetAllMastery = () => {
+    setMasteredIds({})
+    setActiveCards((prev) => prev.map((c) => ({ ...c, isMastered: false })))
+  }
+
+  const isCardMastered = (cardId: string) => !!masteredIds[cardId]
+
+  const getMasteredCount = (deck: Deck): number => {
+    return deck.cards.filter((c) => !!masteredIds[c.id]).length
+  }
+
+  const getUnmasteredCount = (deck: Deck): number => {
+    return deck.cards.length - getMasteredCount(deck)
+  }
+
   const getMasteryRate = (deck: Deck): number => {
     if (deck.cards.length === 0) return 0
-    const masteredCount = deck.cards.filter((c) => !!masteredIds[c.id]).length
+    const masteredCount = getMasteredCount(deck)
     return Math.round((masteredCount / deck.cards.length) * 100)
   }
 
@@ -157,14 +193,20 @@ export const DeckProvider: React.FC<{ children: React.ReactNode }> = ({ children
         activeCards,
         setActiveCards,
         markCardMastery,
+        resetCardMastery,
+        resetDeckMastery,
+        resetAllMastery,
         sessionResult,
         setSessionResult,
-        resetDeckMastery,
         addCustomDeck,
         updateDeck,
         deleteDeck,
         resetToDefaults,
         getMasteryRate,
+        getMasteredCount,
+        getUnmasteredCount,
+        isCardMastered,
+        masteredIds,
       }}
     >
       {children}

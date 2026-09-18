@@ -7,18 +7,24 @@ export interface DeckContextType {
   screen: ScreenState
   setScreen: (screen: ScreenState) => void
   sessionId: number
-  selectDeck: (deckId: string, shuffle?: boolean) => void
+  selectDeck: (deckId: string, shuffle?: boolean, forceAll?: boolean) => void
   activeCards: Flashcard[]
   setActiveCards: (cards: Flashcard[]) => void
   markCardMastery: (cardId: string, isMastered: boolean) => void
+  resetCardMastery: (cardId: string) => void
+  resetDeckMastery: (deckId: string) => void
+  resetAllMastery: () => void
   sessionResult: SessionResult | null
   setSessionResult: (result: SessionResult | null) => void
-  resetDeckMastery: (deckId: string) => void
   addCustomDeck: (newDeck: Omit<Deck, 'id'>) => void
   updateDeck: (updatedDeck: Deck) => void
   deleteDeck: (deckId: string) => void
   resetToDefaults: () => void
   getMasteryRate: (deck: Deck) => number
+  getMasteredCount: (deck: Deck) => number
+  getUnmasteredCount: (deck: Deck) => number
+  isCardMastered: (cardId: string) => boolean
+  masteredIds: Record<string, boolean>
 }
 
 export const STORAGE_KEY = 'flashmaster_beredskab_v4'
