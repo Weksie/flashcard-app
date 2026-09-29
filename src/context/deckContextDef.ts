@@ -25,6 +25,9 @@ export interface DeckContextType {
   getUnmasteredCount: (deck: Deck) => number
   isCardMastered: (cardId: string) => boolean
   masteredIds: Record<string, boolean>
+  isSidebarOpen: boolean
+  setIsSidebarOpen: (open: boolean) => void
+  toggleSidebar: () => void
 }
 
 export const STORAGE_KEY = 'flashmaster_beredskab_v4'

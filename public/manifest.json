@@ -1,7 +1,7 @@
 {
-  "name": "FlashMaster Mobile Flashcards",
-  "short_name": "Flashcards",
-  "description": "Simple mobile app to practice predetermined flashcard questions",
+  "name": "Brandeksamen",
+  "short_name": "Brandeksamen",
+  "description": "Appen for dig der skal til brandmands eksamen",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#0f172a",

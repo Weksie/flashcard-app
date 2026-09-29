@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useDeck } from '../context/useDeck'
 import { MasteredQuestionsModal } from './MasteredQuestionsModal'
+import { AppLogo } from './AppLogo'
 import type { Deck } from '../types'
 import {
   Sparkles,
@@ -18,6 +19,8 @@ import {
   Car,
   Shuffle,
   CheckCircle2,
+  GraduationCap,
+  Menu,
 } from 'lucide-react'
 
 export const DeckSelector: React.FC = () => {
@@ -30,6 +33,8 @@ export const DeckSelector: React.FC = () => {
     resetDeckMastery,
     resetAllMastery,
     masteredIds,
+    setScreen,
+    toggleSidebar,
   } = useDeck()
 
   const [inspectDeck, setInspectDeck] = useState<Deck | null>(null)
@@ -76,13 +81,19 @@ export const DeckSelector: React.FC = () => {
   return (
     <div className="flex-1 flex flex-col min-h-0 overflow-y-auto px-4 pt-safe pb-safe max-w-md mx-auto w-full">
       {/* App Header */}
-      <header className="pt-2 pb-4 flex items-center justify-between">
-        <div className="flex items-center gap-2.5">
-          <div className="w-9 h-9 rounded-2xl bg-gradient-to-tr from-amber-500 to-red-600 flex items-center justify-center shadow-lg shadow-orange-600/25">
-            <Flame className="w-5 h-5 text-white" />
-          </div>
+      <header className="pt-2 pb-3 flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <button
+            onClick={toggleSidebar}
+            className="p-1.5 -ml-1 text-slate-400 hover:text-white rounded-lg hover:bg-slate-900 border border-transparent hover:border-slate-800 transition-colors cursor-pointer"
+            title="Åbn emne-menu"
+            aria-label="Åbn emne-menu"
+          >
+            <Menu className="w-5 h-5" />
+          </button>
+          <AppLogo className="w-9 h-9 flex-shrink-0 drop-shadow-md" />
           <div>
-            <h1 className="text-xl font-bold tracking-tight text-white">Indsats C-Prøve</h1>
+            <h1 className="text-lg sm:text-xl font-bold tracking-tight text-white">C-Spørgsmål til FUI</h1>
             <p className="text-xs text-slate-400">Funktionsuddannelse Indsats</p>
           </div>
         </div>
@@ -98,10 +109,31 @@ export const DeckSelector: React.FC = () => {
             title="Nulstil alle mestrede spørgsmål"
           >
             <RotateCcw className="w-3 h-3" />
-            <span>Nulstil alt</span>
+            <span>Nulstil</span>
           </button>
         )}
       </header>
+
+      {/* Quick Navigation Banner (Eksamenskrav) */}
+      <div className="mb-4">
+        <button
+          onClick={() => setScreen('exam-info')}
+          className="w-full flex items-center justify-between p-2.5 px-3 rounded-2xl bg-slate-900/90 border border-slate-800 hover:border-slate-700 text-left transition-all group shadow-md cursor-pointer"
+        >
+          <div className="flex items-center gap-2.5 min-w-0 pr-1">
+            <div className="w-7 h-7 rounded-lg bg-slate-800 text-amber-400 flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform">
+              <GraduationCap className="w-4 h-4" />
+            </div>
+            <div>
+              <div className="text-xs font-bold text-white group-hover:text-amber-300 transition-colors truncate">
+                Eksamenskrav & point
+              </div>
+              <p className="text-[10px] text-slate-400 truncate">Censorkrav og bedømmelse til C-prøven</p>
+            </div>
+          </div>
+          <ChevronRight className="w-4 h-4 text-slate-500 group-hover:text-amber-400 group-hover:translate-x-0.5 transition-all flex-shrink-0" />
+        </button>
+      </div>
 
       {/* Progress & Overview Card */}
       <div className="bg-slate-900/80 border border-slate-800/80 rounded-2xl p-4 mb-5 backdrop-blur-sm shadow-xl">
@@ -205,11 +237,10 @@ export const DeckSelector: React.FC = () => {
                   </div>
                   <div className="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden">
                     <div
-                      className={`h-full rounded-full transition-all duration-500 ${
-                        isFullyMastered
-                          ? 'bg-emerald-400'
-                          : 'bg-gradient-to-r from-amber-500 to-orange-500'
-                      }`}
+                      className={`h-full rounded-full transition-all duration-500 ${isFullyMastered
+                        ? 'bg-emerald-400'
+                        : 'bg-gradient-to-r from-amber-500 to-orange-500'
+                        }`}
                       style={{ width: `${mastery}%` }}
                     />
                   </div>

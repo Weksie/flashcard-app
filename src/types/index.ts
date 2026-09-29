@@ -19,7 +19,7 @@ export interface Deck {
   isCustom?: boolean
 }
 
-export type ScreenState = 'decks' | 'study' | 'summary'
+export type ScreenState = 'decks' | 'study' | 'summary' | 'exam-info' | 'quick-notes'
 
 export interface SessionResult {
   deckId: string

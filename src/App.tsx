@@ -4,6 +4,9 @@ import { useDeck } from './context/useDeck'
 import { DeckSelector } from './components/DeckSelector'
 import { FlashcardView } from './components/FlashcardView'
 import { SessionSummary } from './components/SessionSummary'
+import { ExamRequirementsView } from './components/ExamRequirementsView'
+import { QuickNotesView } from './components/QuickNotesView'
+import { Sidebar } from './components/Sidebar'
 import { Smartphone, Monitor } from 'lucide-react'
 
 const AppContent: React.FC = () => {
@@ -50,7 +53,12 @@ const AppContent: React.FC = () => {
           {screen === 'decks' && <DeckSelector />}
           {screen === 'study' && <FlashcardView key={sessionId} />}
           {screen === 'summary' && <SessionSummary />}
+          {screen === 'exam-info' && <ExamRequirementsView />}
+          {screen === 'quick-notes' && <QuickNotesView />}
         </main>
+
+        {/* Global Slide-in Navigation Drawer */}
+        <Sidebar />
       </div>
     </div>
   )

@@ -12,7 +12,7 @@ dist
 dist-ssr
 *.local
 .vercel
-
+graphify-out/
 
 # Editor directories and files
 .vscode/*

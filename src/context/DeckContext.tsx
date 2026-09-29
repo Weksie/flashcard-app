@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import type { Deck, Flashcard } from '../types'
+import type { Deck, Flashcard, ScreenState } from '../types'
 import { DEFAULT_DECKS } from '../data/defaultDecks'
 import { DeckContext, STORAGE_KEY, MASTERY_KEY } from './deckContextDef'
 import { shuffleArray } from '../utils/shuffle'
@@ -31,8 +31,11 @@ export const DeckProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const [activeDeckId, setActiveDeckId] = useState<string | null>(null)
   const [activeCards, setActiveCards] = useState<Flashcard[]>([])
-  const [screen, setScreen] = useState<'decks' | 'study' | 'summary'>('decks')
+  const [screen, setScreen] = useState<ScreenState>('decks')
   const [sessionResult, setSessionResult] = useState<any>(null)
+  const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false)
+
+  const toggleSidebar = () => setIsSidebarOpen((prev) => !prev)
 
   // Sync decks to local storage
   useEffect(() => {
@@ -207,6 +210,9 @@ export const DeckProvider: React.FC<{ children: React.ReactNode }> = ({ children
         getUnmasteredCount,
         isCardMastered,
         masteredIds,
+        isSidebarOpen,
+        setIsSidebarOpen,
+        toggleSidebar,
       }}
     >
       {children}
