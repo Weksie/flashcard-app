@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, Suspense, lazy } from 'react'
 import { useDeck } from '../context/useDeck'
 import {
   Menu,
@@ -7,7 +7,26 @@ import {
   FileText,
   Truck,
   Flame,
+  Wind,
+  ClipboardCheck,
+  Thermometer,
+  Shield,
+  Fan,
+  Droplets,
+  BatteryCharging,
+  Building2,
 } from 'lucide-react'
+
+// Lazy-loaded note components for performance
+const BrandforloebContent = lazy(() => import('./notes/BrandforloebContent').then(m => ({ default: m.BrandforloebContent })))
+const PassiveAktiveAnlaegContent = lazy(() => import('./notes/PassiveAktiveAnlaegContent').then(m => ({ default: m.PassiveAktiveAnlaegContent })))
+const TrykluftapparatContent = lazy(() => import('./notes/TrykluftapparatContent').then(m => ({ default: m.TrykluftapparatContent })))
+const KontrolTrykluftContent = lazy(() => import('./notes/KontrolAfTrykluftContent').then(m => ({ default: m.KontrolAfTrykluftContent })))
+const BrandventilationContent = lazy(() => import('./notes/BrandventilationContent').then(m => ({ default: m.BrandventilationContent })))
+const CAFSContent = lazy(() => import('./notes/CAFSContent').then(m => ({ default: m.CAFSContent })))
+const BESSContent = lazy(() => import('./notes/BESSContent').then(m => ({ default: m.BESSContent })))
+const SkumUdlaegningContent = lazy(() => import('./notes/SkumUdlaegningContent').then(m => ({ default: m.SkumUdlaegningContent })))
+const StigroerUdlaegningContent = lazy(() => import('./notes/StigroerUdlaegningContent').then(m => ({ default: m.StigroerUdlaegningContent })))
 
 // Types for the notes
 interface NoteItem {
@@ -39,7 +58,91 @@ const AVAILABLE_NOTES: NoteItem[] = [
     tags: ['Bygningsbrand', 'Forgrener', 'B & C-slange', 'Taktisk skitse'],
     isAvailable: true,
   },
+  {
+    id: 'trykluftapparat',
+    title: 'Trykluftapparat',
+    subtitle: 'Rygmejse, flaske, maske & lungeautomat',
+    category: 'Materiel',
+    description: 'Komplet oversigt over trykluftapparatets dele: rygmejse med reduktionsventil, 300 bar flasker (komposit/stål), maske med overtryk og lungeautomat.',
+    tags: ['Rygmejse', 'Maske', 'Flaske', 'Lungeautomat'],
+    isAvailable: true,
+  },
+  {
+    id: 'kontrol-trykluft',
+    title: 'Kontrol af trykluft',
+    subtitle: 'De 5 kontroller efter brug / flaskeskift',
+    category: 'Materiel',
+    description: 'Kontrolprocedure for trykluftapparatet: visuel kontrol, indholdskontrol, tæthedskontrol, fløjtekontrol og funktionskontrol.',
+    tags: ['5 kontroller', 'Tæthed', 'Fløjte', 'Manometer'],
+    isAvailable: true,
+  },
+  {
+    id: 'brandforloeb',
+    title: 'Brandforløb',
+    subtitle: 'Faserne i en rumbrand',
+    category: 'Brandteori',
+    description: 'Rumbrandens udvikling fra initialbrand til afkøling. Inkluderer overtændingsfasen, fuldt udviklet rumbrand samt særlige fænomener: Backdraft og Røggaseksplosion.',
+    tags: ['Rumbrand', 'Overtændingsfase', 'Backdraft', 'Røggaseksplosion'],
+    isAvailable: true,
+  },
+  {
+    id: 'passive-aktive-anlaeg',
+    title: 'Passive & Aktive Anlæg',
+    subtitle: 'Brandsikringsanlæg i bygninger',
+    category: 'Brandsikring',
+    description: 'Oversigt over passive brandsikring (brandsektioner, brandceller, branddøre) og aktive brandsikringsanlæg (ABA, sprinkler, røgudluftning, rumslukningsanlæg).',
+    tags: ['ABA-anlæg', 'Sprinkler', 'Brandsektioner', 'Røgudluftning', 'Brandcentral'],
+    isAvailable: true,
+  },
+  {
+    id: 'brandventilation',
+    title: 'Brandventilation',
+    subtitle: 'Taktisk ventilation & overtryk (PPV)',
+    category: 'Brandteori',
+    description: 'Systematisk fjernelse af varme og røggasser. Gennemgang af naturlig vs. mekanisk ventilation (PPV), kontrolleret offensiv indsats, serie/parallel, kegle- vs. ejektorprincip og de 7 gyldne regler.',
+    tags: ['Overtryksventilation', 'PPV', 'Kontrolleret offensiv', 'Ventilatortyper', '7 gyldne regler'],
+    isAvailable: true,
+  },
+  {
+    id: 'cafs',
+    title: 'Slukning med CAFS',
+    subtitle: 'Compressed Air Foam System (Trykluftskum)',
+    category: 'Brandteori',
+    description: 'Hurtig guide til CAFS: Våd- vs. tør-CAFS, AWG-rør med forsatser og spyd, modtryk ved åbning (2 mand), de 4 indsatstyper (Knock Down, begrænsning, konstruktionsbrand, væskebrand) og forbuddet mod røgdykning.',
+    tags: ['Trykluftskum', 'Våd-CAFS', 'Tør-CAFS', 'Knock Down', 'Spyd'],
+    isAvailable: true,
+  },
+  {
+    id: 'bess',
+    title: 'Brand i BESS-anlæg',
+    subtitle: 'Battery Energy Storage Systems (Litiumion)',
+    category: 'Brandteori',
+    description: 'Kompakt guide til BESS: De 3 hovedfarer (elektrisk stød, afgasning/eksplosion i lukkede rum, thermal runaway), B-E-S-S huskereglen, risikoniveauer 1-4 og sikkerhedsafstande.',
+    tags: ['BESS', 'Litiumion', 'Thermal Runaway', 'B-E-S-S', 'Eksplosionsfare'],
+    isAvailable: true,
+  },
+  {
+    id: 'skum-udlaegning',
+    title: 'Skumudlægning',
+    subtitle: 'Fra sprøjten skumslangen ud',
+    category: 'Slangeudlægning',
+    description: 'Standardprocedure ved væskebrande og skumindsatser. Z-tilblander med ejektorprincip, skumvæskeforsyning, komplet bemanding for alle 6 mand og taktisk skitse.',
+    tags: ['Skumrør', 'Z-tilblander', 'Skumvæske', 'Væskebrand', 'Taktisk skitse'],
+    isAvailable: true,
+  },
+  {
+    id: 'stigroer-udlaegning',
+    title: 'Stigrørsudlægning',
+    subtitle: 'Fra stigrøret C-slangen ud',
+    category: 'Slangeudlægning',
+    description: 'Standardprocedure ved brand i etagebyggeri med tørt stigrør. Dobbelt B-fødelinje, signalsystem, sikring af ventiler og komplet bemanding for alle 6 mand.',
+    tags: ['Tørt stigrør', '2x B-fødelinje', 'Dobbelt indløb', 'Højhustaktik', 'Ventilkontrol'],
+    isAvailable: true,
+  },
 ]
+
+
+
 
 interface MaterielItem {
   letter: string
@@ -86,7 +189,7 @@ const HT_TASKS: RoleTask[] = [
     roleId: 'nr2',
     hvem: '2.er:',
     hvemSub: 'Røgdykkermakker',
-    materiel: '—',
+    materiel: 'â€”',
     hvad: 'Udlægger slangen, medvirker ved eventuel ophaling.',
     detail: 'Sikrer at slangen løber frit uden knæk og følger nr. 1 tæt som røgdykkermakker.',
     color: 'blue',
@@ -95,7 +198,7 @@ const HT_TASKS: RoleTask[] = [
     roleId: 'nr3',
     hvem: '3.er:',
     hvemSub: 'Hjælper',
-    materiel: '—',
+    materiel: 'â€”',
     hvad: 'Hjælper med slangeudlægning, går til lederen.',
     detail: 'Trækker slange af tromlen for at aflaste røgdykkerne og melder sig derefter straks til lederen.',
     color: 'emerald',
@@ -118,7 +221,7 @@ const HT_TASKS: RoleTask[] = [
     roleId: 'mp',
     hvem: 'MP:',
     hvemSub: 'Motorpasser / Chauffør',
-    materiel: '—',
+    materiel: 'â€”',
     hvad: 'Betjener pumpen.',
     detail: 'Starter HT-pumpen, åbner for afgang og overvåger vandbeholdning samt pumpetryk.',
     color: 'cyan',
@@ -186,9 +289,9 @@ const BC_TASKS: RoleTask[] = [
     roleId: 'mp',
     hvem: 'MP:',
     hvemSub: 'Motorpasser / Chauffør',
-    materiel: '—',
-    hvad: 'Betjener pumpen, gør klar til fødeslangeudlægning',
-    detail: 'Betjener pumpetrykket for B-afgangen og gør sprøjtens fødeindtag klar til modtagelse af vand fra brandhanen.',
+    materiel: 'â€”',
+    hvad: 'Betjener pumpen, går klar til fødeslangeudlægning',
+    detail: 'Betjener pumpetrykket for B-afgangen og går sprøjtens fødeindtag klar til modtagelse af vand fra brandhanen.',
     color: 'cyan',
   },
 ]
@@ -272,6 +375,9 @@ export const QuickNotesView: React.FC = () => {
             <p className="text-xs text-slate-300 mt-1.5 leading-relaxed">
               Vælg et emne herunder for at se detaljeret bemanding, materielopgaver og taktiske skitser til brug ved prøven og i felten.
             </p>
+            <p className="text-xs text-red-300 mt-1.5 leading-relaxed">
+              Vær opmærksom på at der kan forkomme fejl i nedenstående materiale.
+            </p>
           </div>
 
           {/* Cards for each note topic */}
@@ -311,6 +417,24 @@ export const QuickNotesView: React.FC = () => {
                           <Truck className="w-5 h-5" />
                         ) : note.id === 'bc-udlaegning' ? (
                           <Flame className="w-5 h-5" />
+                        ) : note.id === 'trykluftapparat' ? (
+                          <Wind className="w-5 h-5" />
+                        ) : note.id === 'kontrol-trykluft' ? (
+                          <ClipboardCheck className="w-5 h-5" />
+                        ) : note.id === 'brandforloeb' ? (
+                          <Thermometer className="w-5 h-5" />
+                        ) : note.id === 'passive-aktive-anlaeg' ? (
+                          <Shield className="w-5 h-5" />
+                        ) : note.id === 'brandventilation' ? (
+                          <Fan className="w-5 h-5" />
+                        ) : note.id === 'cafs' ? (
+                          <Droplets className="w-5 h-5" />
+                        ) : note.id === 'bess' ? (
+                          <BatteryCharging className="w-5 h-5" />
+                        ) : note.id === 'skum-udlaegning' ? (
+                          <Droplets className="w-5 h-5" />
+                        ) : note.id === 'stigroer-udlaegning' ? (
+                          <Building2 className="w-5 h-5" />
                         ) : (
                           <FileText className="w-5 h-5" />
                         )}
@@ -326,17 +450,6 @@ export const QuickNotesView: React.FC = () => {
                         </p>
                       </div>
                     </div>
-
-                    {isAvailable ? (
-                      <span className="inline-flex items-center gap-1.5 text-[10px] font-bold text-emerald-400 bg-emerald-500/15 border border-emerald-500/30 px-2.5 py-0.5 rounded-full flex-shrink-0">
-                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                        Klar
-                      </span>
-                    ) : (
-                      <span className="text-[10px] font-medium text-slate-400 bg-slate-800 px-2 py-0.5 rounded-full border border-slate-700/60 flex-shrink-0">
-                        Kommer snart
-                      </span>
-                    )}
                   </div>
 
                   <p className="text-xs text-slate-300 leading-relaxed mb-3">
@@ -356,7 +469,7 @@ export const QuickNotesView: React.FC = () => {
                     </div>
 
                     <div className="flex items-center gap-1 text-xs font-semibold text-amber-400 group-hover:translate-x-1 transition-transform flex-shrink-0 ml-2">
-                      <span>{isAvailable ? 'Åbn udlægning' : 'Se info'}</span>
+                      <span>{isAvailable ? 'Åbn emne' : 'Se info'}</span>
                       <ChevronRight className="w-3.5 h-3.5" />
                     </div>
                   </div>
@@ -402,7 +515,7 @@ export const QuickNotesView: React.FC = () => {
                       : 'bg-slate-800 text-slate-400'
                       }`}
                   >
-                    {note.id === 'ht-udlaegning' ? 'HT' : note.id === 'bc-udlaegning' ? 'B/C' : note.title.slice(0, 2)}
+                    {note.id === 'ht-udlaegning' ? 'HT' : note.id === 'bc-udlaegning' ? 'B/C' : note.id === 'trykluftapparat' ? 'TA' : note.id === 'kontrol-trykluft' ? 'KT' : note.id === 'brandforloeb' ? 'BF' : note.id === 'passive-aktive-anlaeg' ? 'PA' : note.id === 'brandventilation' ? 'BV' : note.id === 'cafs' ? 'CF' : note.id === 'bess' ? 'BE' : note.id === 'skum-udlaegning' ? 'SU' : note.id === 'stigroer-udlaegning' ? 'SR' : note.title.slice(0, 2)}
                   </div>
                   <span className="text-xs font-bold whitespace-nowrap">{note.title}</span>
                   {note.isAvailable && (
@@ -543,12 +656,12 @@ export const QuickNotesView: React.FC = () => {
                                     </div>
                                   )}
                                 </div>
-                              ) : task.materiel !== '—' ? (
+                              ) : task.materiel !== 'â€”' ? (
                                 <span className="inline-block px-1.5 py-0.5 text-[11px] font-medium rounded bg-slate-800 text-slate-300 border border-slate-700">
                                   {task.materiel}
                                 </span>
                               ) : (
-                                <span className="text-slate-600 font-mono pl-1">—</span>
+                                <span className="text-slate-600 font-mono pl-1">â€”</span>
                               )}
                             </td>
 
@@ -583,8 +696,8 @@ export const QuickNotesView: React.FC = () => {
                     )}
                     <h2 className="text-xs font-bold text-white uppercase tracking-wider">
                       {isBc
-                        ? 'Fra sprøjten – B/C slangen ud'
-                        : 'Fra sprøjten – Højtryksslangen ud'}
+                        ? 'Fra sprøjten â€“ B/C slangen ud'
+                        : 'Fra sprøjten â€“ Højtryksslangen ud'}
                     </h2>
                   </div>
                   <span className="text-[10px] text-slate-400 bg-slate-800 px-2 py-0.5 rounded-full">
@@ -671,7 +784,7 @@ export const QuickNotesView: React.FC = () => {
                         </text>
                       </g>
 
-                      {/* --- 3. SPRØJTEN (The Fire Truck) --- */}
+                      {/* --- 3. SPRøJTEN (The Fire Truck) --- */}
                       <g transform="translate(130, 110)">
                         {/* Outer Truck outline */}
                         <rect x="0" y="0" width="42" height="90" rx="6" fill="#1e293b" stroke="#475569" strokeWidth="2" />
@@ -814,8 +927,8 @@ export const QuickNotesView: React.FC = () => {
                           highlightedRoleId === 'nr1'
                             ? '#f43f5e'
                             : highlightedRoleId === 'nr2'
-                            ? '#3b82f6'
-                            : '#e2e8f0'
+                              ? '#3b82f6'
+                              : '#e2e8f0'
                         }
                         strokeWidth={
                           highlightedRoleId === 'nr1' || highlightedRoleId === 'nr2' ? '4' : '3'
@@ -837,7 +950,7 @@ export const QuickNotesView: React.FC = () => {
 
                       {/* Direction of Attack arrow note */}
                       <text x="540" y="140" fill="#f59e0b" fontSize="9" fontWeight="bold" textAnchor="middle">
-                        Mod ilden ➔
+                        Mod ilden âž”
                       </text>
 
                       {/* Node 2 Label & Interaction (along C-slange serpentine) */}
@@ -895,7 +1008,7 @@ export const QuickNotesView: React.FC = () => {
                         strokeDasharray="5 3"
                       />
                       <text x="440" y="268" fill="#94a3b8" fontSize="10" fontStyle="italic" textAnchor="start">
-                        (evt. 3. og 4. – ved andet udløb)
+                        (evt. 3. og 4. â€“ ved andet udløb)
                       </text>
                     </svg>
                   ) : (
@@ -977,7 +1090,7 @@ export const QuickNotesView: React.FC = () => {
                         </text>
                       </g>
 
-                      {/* --- 3. SPRØJTEN (The Fire Truck) --- */}
+                      {/* --- 3. SPRøJTEN (The Fire Truck) --- */}
                       <g transform="translate(160, 95)">
                         {/* Outer Truck outline */}
                         <rect
@@ -1143,7 +1256,7 @@ export const QuickNotesView: React.FC = () => {
 
                       {/* Direction of Attack arrow note */}
                       <text x="515" y="118" fill="#f59e0b" fontSize="9" fontWeight="bold" textAnchor="middle">
-                        Mod ilden ➔
+                        Mod ilden âž”
                       </text>
                     </svg>
                   )}
@@ -1161,7 +1274,7 @@ export const QuickNotesView: React.FC = () => {
                             <span className="font-bold text-amber-300">
                               {role.hvem} {role.hvemSub}
                             </span>
-                            {role.materiel !== '—' && (
+                            {role.materiel !== 'â€”' && (
                               <span className="text-[10px] bg-amber-500/20 text-amber-200 px-1.5 py-0.5 rounded font-semibold">
                                 Materiel: {role.materiel}
                               </span>
@@ -1175,6 +1288,42 @@ export const QuickNotesView: React.FC = () => {
                 )}
               </div>
             </div>
+          ) : selectedNoteId === 'trykluftapparat' ? (
+            <Suspense fallback={<div className="flex items-center justify-center h-32 text-slate-400">Indlæser...</div>}>
+              <TrykluftapparatContent />
+            </Suspense>
+          ) : selectedNoteId === 'kontrol-trykluft' ? (
+            <Suspense fallback={<div className="flex items-center justify-center h-32 text-slate-400">Indlæser...</div>}>
+              <KontrolTrykluftContent />
+            </Suspense>
+          ) : selectedNoteId === 'brandforloeb' ? (
+            <Suspense fallback={<div className="flex items-center justify-center h-32 text-slate-400">Indlæser...</div>}>
+              <BrandforloebContent />
+            </Suspense>
+          ) : selectedNoteId === 'passive-aktive-anlaeg' ? (
+            <Suspense fallback={<div className="flex items-center justify-center h-32 text-slate-400">Indlæser...</div>}>
+              <PassiveAktiveAnlaegContent />
+            </Suspense>
+          ) : selectedNoteId === 'brandventilation' ? (
+            <Suspense fallback={<div className="flex items-center justify-center h-32 text-slate-400">Indlæser...</div>}>
+              <BrandventilationContent />
+            </Suspense>
+          ) : selectedNoteId === 'cafs' ? (
+            <Suspense fallback={<div className="flex items-center justify-center h-32 text-slate-400">Indlæser...</div>}>
+              <CAFSContent />
+            </Suspense>
+          ) : selectedNoteId === 'bess' ? (
+            <Suspense fallback={<div className="flex items-center justify-center h-32 text-slate-400">Indlæser...</div>}>
+              <BESSContent />
+            </Suspense>
+          ) : selectedNoteId === 'skum-udlaegning' ? (
+            <Suspense fallback={<div className="flex items-center justify-center h-32 text-slate-400">Indlæser...</div>}>
+              <SkumUdlaegningContent />
+            </Suspense>
+          ) : selectedNoteId === 'stigroer-udlaegning' ? (
+            <Suspense fallback={<div className="flex items-center justify-center h-32 text-slate-400">Indlæser...</div>}>
+              <StigroerUdlaegningContent />
+            </Suspense>
           ) : (
             /* Placeholder for other upcoming notes with back button */
             <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 text-center shadow-xl space-y-4">
@@ -1205,3 +1354,4 @@ export const QuickNotesView: React.FC = () => {
     </div>
   )
 }
+
