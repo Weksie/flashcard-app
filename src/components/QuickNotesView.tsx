@@ -1,4 +1,4 @@
-import React, { useState, Suspense, lazy } from 'react'
+﻿import React, { useState, Suspense, lazy } from 'react'
 import { useDeck } from '../context/useDeck'
 import {
   Menu,
@@ -309,14 +309,14 @@ export const QuickNotesView: React.FC = () => {
     <div className="flex-1 flex flex-col min-h-0 overflow-y-auto px-4 pt-safe pb-safe max-w-md mx-auto w-full text-slate-100">
       {/* Top Header */}
       <header className="pt-2 pb-3 flex items-center justify-between sticky top-0 bg-slate-950/95 backdrop-blur-md z-20 -mx-4 px-4 border-b border-slate-900/80 mb-3">
-        <div className="flex items-center gap-1.5">
+        <div className="flex items-center gap-2">
           <button
             onClick={toggleSidebar}
-            className="p-1.5 -ml-1 text-slate-400 hover:text-white rounded-lg hover:bg-slate-900 border border-transparent hover:border-slate-800 transition-colors cursor-pointer"
+            className="w-10 h-10 flex items-center justify-center text-slate-300 hover:text-white rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-slate-700 shadow-sm transition-all active:scale-95 cursor-pointer flex-shrink-0"
             title="Åbn emne-menu"
             aria-label="Åbn emne-menu"
           >
-            <Menu className="w-5 h-5" />
+            <Menu className="w-6 h-6" />
           </button>
 
           {selectedNoteId ? (
@@ -376,7 +376,7 @@ export const QuickNotesView: React.FC = () => {
               Vælg et emne herunder for at se detaljeret bemanding, materielopgaver og taktiske skitser til brug ved prøven og i felten.
             </p>
             <p className="text-xs text-red-300 mt-1.5 leading-relaxed">
-              Vær opmærksom på at der kan forkomme fejl i nedenstående materiale.
+              Vær opmærksom på at der kan forkomme fejl i nedenstående materiale, og at der ikke nødvendigvis står alt du skal bruge til din eksamen. Dette er ikke en officiel App, men blot et hjælpe middel.
             </p>
           </div>
 

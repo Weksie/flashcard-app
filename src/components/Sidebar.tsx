@@ -9,6 +9,7 @@ import {
   Sparkles,
   ChevronRight,
   Shield,
+  ClipboardCheck,
 } from 'lucide-react'
 
 export const Sidebar: React.FC = () => {
@@ -29,12 +30,13 @@ export const Sidebar: React.FC = () => {
   const totalMastered = Object.keys(masteredIds).length
   const avgMastery = totalQuestions > 0 ? Math.round((totalMastered / totalQuestions) * 100) : 0
 
-  const handleNavigate = (targetScreen: 'decks' | 'quick-notes' | 'exam-info') => {
+  const handleNavigate = (targetScreen: 'decks' | 'quick-notes' | 'exam-info' | 'ab-questions') => {
     setScreen(targetScreen)
     setIsSidebarOpen(false)
   }
 
   const isQuestionsActive = screen === 'decks' || screen === 'study' || screen === 'summary'
+  const isAbActive = screen === 'ab-questions'
   const isNotesActive = screen === 'quick-notes'
   const isExamActive = screen === 'exam-info'
 
@@ -72,10 +74,10 @@ export const Sidebar: React.FC = () => {
           </div>
           <button
             onClick={() => setIsSidebarOpen(false)}
-            className="p-1.5 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800 transition-colors cursor-pointer"
+            className="w-8 h-8 flex items-center justify-center text-slate-400 hover:text-white rounded-lg hover:bg-slate-800 transition-colors cursor-pointer"
             aria-label="Luk menu"
           >
-            <X className="w-4 h-4" />
+            <X className="w-5 h-5" />
           </button>
         </div>
 
@@ -121,7 +123,42 @@ export const Sidebar: React.FC = () => {
                 />
               </button>
 
-              {/* Item 2: Hurtige Noter */}
+              {/* Item 2: A- og B-Spørgsmål */}
+              <button
+                onClick={() => handleNavigate('ab-questions')}
+                className={`w-full flex items-center justify-between p-3 rounded-xl border text-left transition-all group cursor-pointer ${isAbActive
+                  ? 'bg-amber-500/10 border-amber-500/30 text-white shadow-sm'
+                  : 'bg-slate-850/60 border-slate-800/70 text-slate-300 hover:bg-slate-800/80 hover:border-slate-700/80'
+                  }`}
+              >
+                <div className="flex items-center gap-3 min-w-0">
+                  <div
+                    className={`w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 transition-colors ${isAbActive
+                      ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30'
+                      : 'bg-slate-800 text-slate-400 group-hover:text-amber-300'
+                      }`}
+                  >
+                    <ClipboardCheck className="w-4 h-4" />
+                  </div>
+                  <div className="min-w-0">
+                    <div className="text-xs font-bold truncate flex items-center gap-1.5">
+                      <span>A- & B-Spørgsmål</span>
+                      <span className="text-[9px] font-bold uppercase tracking-wider text-amber-400 bg-amber-500/15 border border-amber-500/30 px-1 py-0.2 rounded">
+                        Praktik
+                      </span>
+                    </div>
+                    <p className="text-[11px] text-slate-400 truncate">15 opgavesæt til certificering</p>
+                  </div>
+                </div>
+                <ChevronRight
+                  className={`w-4 h-4 transition-transform flex-shrink-0 ${isAbActive
+                    ? 'text-amber-400 translate-x-0.5'
+                    : 'text-slate-500 group-hover:text-slate-300'
+                    }`}
+                />
+              </button>
+
+              {/* Item 3: Hurtige Noter */}
               <button
                 onClick={() => handleNavigate('quick-notes')}
                 className={`w-full flex items-center justify-between p-3 rounded-xl border text-left transition-all group cursor-pointer ${isNotesActive
@@ -156,7 +193,7 @@ export const Sidebar: React.FC = () => {
                 />
               </button>
 
-              {/* Item 3: Eksamenskrav */}
+              {/* Item 4: Eksamenskrav */}
               <button
                 onClick={() => handleNavigate('exam-info')}
                 className={`w-full flex items-center justify-between p-3 rounded-xl border text-left transition-all group cursor-pointer ${isExamActive

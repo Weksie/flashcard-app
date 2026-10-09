@@ -1,6 +1,7 @@
 import React from 'react'
 import { useDeck } from '../context/useDeck'
 import {
+  Menu,
   ChevronLeft,
   GraduationCap,
   Award,
@@ -13,19 +14,29 @@ import {
 } from 'lucide-react'
 
 export const ExamRequirementsView: React.FC = () => {
-  const { setScreen } = useDeck()
+  const { setScreen, toggleSidebar } = useDeck()
 
   return (
     <div className="flex-1 flex flex-col min-h-0 overflow-y-auto px-4 pt-safe pb-safe max-w-md mx-auto w-full text-slate-100">
       {/* Top Navigation Bar */}
       <header className="pt-2 pb-3 flex items-center justify-between sticky top-0 bg-slate-950/90 backdrop-blur-md z-10 -mx-4 px-4 border-b border-slate-900/60 mb-4">
-        <button
-          onClick={() => setScreen('decks')}
-          className="flex items-center gap-1 text-xs text-slate-400 hover:text-amber-400 transition-colors py-1.5 pr-2 rounded-lg cursor-pointer"
-        >
-          <ChevronLeft className="w-4 h-4" />
-          <span>Tilbage til spørgsmål</span>
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={toggleSidebar}
+            className="w-10 h-10 flex items-center justify-center text-slate-300 hover:text-white rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-slate-700 shadow-sm transition-all active:scale-95 cursor-pointer flex-shrink-0"
+            title="Åbn emne-menu"
+            aria-label="Åbn emne-menu"
+          >
+            <Menu className="w-6 h-6" />
+          </button>
+          <button
+            onClick={() => setScreen('decks')}
+            className="flex items-center gap-1 text-xs text-slate-400 hover:text-amber-400 transition-colors py-1.5 pr-2 rounded-lg cursor-pointer"
+          >
+            <ChevronLeft className="w-4 h-4" />
+            <span>C-Spørgsmål</span>
+          </button>
+        </div>
 
         <span className="text-[11px] font-semibold text-amber-400/90 bg-amber-500/10 border border-amber-500/20 px-2 py-0.5 rounded-full">
           C-Spørgsmål
