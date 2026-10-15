@@ -18,6 +18,7 @@ import {
   ExternalLink,
   GraduationCap,
   Sparkles,
+  Award,
 } from 'lucide-react'
 
 const STORAGE_PROGRESS_KEY = 'fui_ab_questions_progress_v1'
@@ -193,11 +194,12 @@ export const AbQuestionsView: React.FC = () => {
         <div className="flex items-center gap-2">
           <button
             onClick={toggleSidebar}
-            className="w-10 h-10 flex items-center justify-center text-slate-300 hover:text-white rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-slate-700 shadow-sm transition-all active:scale-95 cursor-pointer flex-shrink-0"
-            title="Åbn menu"
-            aria-label="Åbn menu"
+            className="flex items-center gap-1.5 px-3 py-2 text-xs font-bold text-amber-300 hover:text-white bg-slate-900/90 hover:bg-slate-850 border border-amber-500/40 hover:border-amber-400 rounded-xl shadow-lg shadow-amber-500/10 transition-all active:scale-95 cursor-pointer flex-shrink-0 group"
+            title="Åbn emne-menu"
+            aria-label="Åbn emne-menu"
           >
-            <Menu className="w-6 h-6" />
+            <Menu className="w-4 h-4 text-amber-400 group-hover:scale-110 transition-transform" />
+            <span>Menu</span>
           </button>
 
           {selectedQuestionId !== null ? (
@@ -288,14 +290,21 @@ export const AbQuestionsView: React.FC = () => {
               </div>
             </div>
 
-            {/* Quick Action: Draw Random Question */}
-            <div className="mt-3.5 pt-3 border-t border-slate-800/80 flex items-center gap-2">
+            {/* Quick Action: Start Full Exam Test & Draw Random Question */}
+            <div className="mt-3.5 pt-3 border-t border-slate-800/80 flex flex-col gap-2">
+              <button
+                onClick={() => setScreen('exam-simulation')}
+                className="w-full py-2.5 px-3 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-bold text-xs flex items-center justify-center gap-2 shadow-lg shadow-amber-500/20 transition-all active:scale-[0.99] cursor-pointer"
+              >
+                <Award className="w-4 h-4" />
+                <span>Start Eksamenstræning med A, B og C (Simulator)</span>
+              </button>
               <button
                 onClick={handleDrawRandomQuestion}
-                className="w-full py-2.5 px-3 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-bold text-xs flex items-center justify-center gap-2 shadow-lg shadow-amber-500/20 transition-all active:scale-[0.99] cursor-pointer"
+                className="w-full py-2 px-3 rounded-xl bg-slate-800/80 hover:bg-slate-800 text-slate-300 font-semibold text-xs flex items-center justify-center gap-2 border border-slate-700 transition-colors cursor-pointer"
               >
-                <Shuffle className="w-4 h-4" />
-                <span>Træk et tilfældigt spørgsmål (Prøvesimulering)</span>
+                <Shuffle className="w-3.5 h-3.5 text-amber-400" />
+                <span>Træk et tilfældigt A/B-spørgsmål her</span>
               </button>
             </div>
           </div>

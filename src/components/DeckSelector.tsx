@@ -21,6 +21,7 @@ import {
   CheckCircle2,
   GraduationCap,
   Menu,
+  Award,
 } from 'lucide-react'
 
 export const DeckSelector: React.FC = () => {
@@ -85,11 +86,12 @@ export const DeckSelector: React.FC = () => {
         <div className="flex items-center gap-2.5">
           <button
             onClick={toggleSidebar}
-            className="w-10 h-10 flex items-center justify-center text-slate-300 hover:text-white rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-slate-700 shadow-sm transition-all active:scale-95 cursor-pointer flex-shrink-0"
+            className="flex items-center gap-1.5 px-3 py-2 text-xs font-bold text-amber-300 hover:text-white bg-slate-900/90 hover:bg-slate-850 border border-amber-500/40 hover:border-amber-400 rounded-xl shadow-lg shadow-amber-500/10 transition-all active:scale-95 cursor-pointer flex-shrink-0 group"
             title="Åbn emne-menu"
             aria-label="Åbn emne-menu"
           >
-            <Menu className="w-6 h-6" />
+            <Menu className="w-4 h-4 text-amber-400 group-hover:scale-110 transition-transform" />
+            <span>Menu</span>
           </button>
           <AppLogo className="w-9 h-9 flex-shrink-0 drop-shadow-md" />
           <div>
@@ -114,24 +116,36 @@ export const DeckSelector: React.FC = () => {
         )}
       </header>
 
-      {/* Quick Navigation Banner (Eksamenskrav) */}
-      <div className="mb-4">
+      {/* Quick Navigation Banners: Eksamenstræning & Eksamenskrav */}
+      <div className="grid grid-cols-2 gap-2 mb-4">
+        <button
+          onClick={() => setScreen('exam-simulation')}
+          className="flex items-center gap-2 p-2.5 rounded-2xl bg-gradient-to-br from-amber-500/15 via-slate-900 to-slate-900 border border-amber-500/30 hover:border-amber-500/50 text-left transition-all group shadow-md cursor-pointer"
+        >
+          <div className="w-8 h-8 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform">
+            <Award className="w-4 h-4" />
+          </div>
+          <div className="min-w-0 flex-1">
+            <div className="text-xs font-bold text-white group-hover:text-amber-300 transition-colors truncate">
+              Eksamenstræning
+            </div>
+            <p className="text-[10px] text-amber-300/80 truncate">A, B & C prøve</p>
+          </div>
+        </button>
+
         <button
           onClick={() => setScreen('exam-info')}
-          className="w-full flex items-center justify-between p-2.5 px-3 rounded-2xl bg-slate-900/90 border border-slate-800 hover:border-slate-700 text-left transition-all group shadow-md cursor-pointer"
+          className="flex items-center gap-2 p-2.5 rounded-2xl bg-slate-900/90 border border-slate-800 hover:border-slate-700 text-left transition-all group shadow-md cursor-pointer"
         >
-          <div className="flex items-center gap-2.5 min-w-0 pr-1">
-            <div className="w-7 h-7 rounded-lg bg-slate-800 text-amber-400 flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform">
-              <GraduationCap className="w-4 h-4" />
-            </div>
-            <div>
-              <div className="text-xs font-bold text-white group-hover:text-amber-300 transition-colors truncate">
-                Eksamenskrav & point
-              </div>
-              <p className="text-[10px] text-slate-400 truncate">Censorkrav og bedømmelse til C-prøven</p>
-            </div>
+          <div className="w-8 h-8 rounded-xl bg-slate-800 text-slate-300 flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform">
+            <GraduationCap className="w-4 h-4 text-amber-400" />
           </div>
-          <ChevronRight className="w-4 h-4 text-slate-500 group-hover:text-amber-400 group-hover:translate-x-0.5 transition-all flex-shrink-0" />
+          <div className="min-w-0 flex-1">
+            <div className="text-xs font-bold text-white group-hover:text-amber-300 transition-colors truncate">
+              C-Prøve krav
+            </div>
+            <p className="text-[10px] text-slate-400 truncate">Censorkrav & point</p>
+          </div>
         </button>
       </div>
 

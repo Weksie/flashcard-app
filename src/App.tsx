@@ -7,6 +7,7 @@ import { SessionSummary } from './components/SessionSummary'
 import { ExamRequirementsView } from './components/ExamRequirementsView'
 import { QuickNotesView } from './components/QuickNotesView'
 import { AbQuestionsView } from './components/AbQuestionsView'
+import { ExamSimulationView } from './components/ExamSimulationView'
 import { Sidebar } from './components/Sidebar'
 import { Smartphone, Monitor } from 'lucide-react'
 
@@ -57,6 +58,7 @@ const AppContent: React.FC = () => {
           {screen === 'exam-info' && <ExamRequirementsView />}
           {screen === 'quick-notes' && <QuickNotesView />}
           {screen === 'ab-questions' && <AbQuestionsView />}
+          {screen === 'exam-simulation' && <ExamSimulationView />}
         </main>
 
         {/* Global Slide-in Navigation Drawer */}

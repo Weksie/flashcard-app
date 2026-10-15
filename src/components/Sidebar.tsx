@@ -10,6 +10,7 @@ import {
   ChevronRight,
   Shield,
   ClipboardCheck,
+  Award,
 } from 'lucide-react'
 
 export const Sidebar: React.FC = () => {
@@ -30,12 +31,13 @@ export const Sidebar: React.FC = () => {
   const totalMastered = Object.keys(masteredIds).length
   const avgMastery = totalQuestions > 0 ? Math.round((totalMastered / totalQuestions) * 100) : 0
 
-  const handleNavigate = (targetScreen: 'decks' | 'quick-notes' | 'exam-info' | 'ab-questions') => {
+  const handleNavigate = (targetScreen: 'decks' | 'quick-notes' | 'exam-info' | 'ab-questions' | 'exam-simulation') => {
     setScreen(targetScreen)
     setIsSidebarOpen(false)
   }
 
   const isQuestionsActive = screen === 'decks' || screen === 'study' || screen === 'summary'
+  const isExamSimActive = screen === 'exam-simulation'
   const isAbActive = screen === 'ab-questions'
   const isNotesActive = screen === 'quick-notes'
   const isExamActive = screen === 'exam-info'
@@ -123,7 +125,42 @@ export const Sidebar: React.FC = () => {
                 />
               </button>
 
-              {/* Item 2: A- og B-Spørgsmål */}
+              {/* Item 2: Eksamenstræning (Simulator) */}
+              <button
+                onClick={() => handleNavigate('exam-simulation')}
+                className={`w-full flex items-center justify-between p-3 rounded-xl border text-left transition-all group cursor-pointer ${isExamSimActive
+                  ? 'bg-amber-500/10 border-amber-500/30 text-white shadow-sm'
+                  : 'bg-slate-850/60 border-slate-800/70 text-slate-300 hover:bg-slate-800/80 hover:border-slate-700/80'
+                  }`}
+              >
+                <div className="flex items-center gap-3 min-w-0">
+                  <div
+                    className={`w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 transition-colors ${isExamSimActive
+                      ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30'
+                      : 'bg-slate-800 text-slate-400 group-hover:text-amber-300'
+                      }`}
+                  >
+                    <Award className="w-4 h-4" />
+                  </div>
+                  <div className="min-w-0">
+                    <div className="text-xs font-bold truncate flex items-center gap-1.5">
+                      <span>Eksamenstræning</span>
+                      <span className="text-[9px] font-bold uppercase tracking-wider text-amber-400 bg-amber-500/15 border border-amber-500/30 px-1 py-0.2 rounded">
+                        A, B & C
+                      </span>
+                    </div>
+                    <p className="text-[11px] text-slate-400 truncate">Prøvesimulation med pointgivning</p>
+                  </div>
+                </div>
+                <ChevronRight
+                  className={`w-4 h-4 transition-transform flex-shrink-0 ${isExamSimActive
+                    ? 'text-amber-400 translate-x-0.5'
+                    : 'text-slate-500 group-hover:text-slate-300'
+                    }`}
+                />
+              </button>
+
+              {/* Item 3: A- og B-Spørgsmål */}
               <button
                 onClick={() => handleNavigate('ab-questions')}
                 className={`w-full flex items-center justify-between p-3 rounded-xl border text-left transition-all group cursor-pointer ${isAbActive
@@ -211,7 +248,7 @@ export const Sidebar: React.FC = () => {
                     <GraduationCap className="w-4 h-4" />
                   </div>
                   <div className="min-w-0">
-                    <div className="text-xs font-bold truncate">Krav & Pointgivning</div>
+                    <div className="text-xs font-bold truncate">C-Prøve Krav & Pointgivning</div>
                     <p className="text-[11px] text-slate-400 truncate">Regler, censorkrav & point</p>
                   </div>
                 </div>

@@ -440,7 +440,7 @@ export const ALL_QUESTIONS: Flashcard[] = [
     answer: 'Højtrykspumpe, højtrykslange, skærelance, skæremiddel (abrasiv)',
   },
 
-  // --- Brandmandens (røgdykkerens) arbejde & Sikkerhed (72-101) ---
+  // --- Brandmandens (røgdykkerens) arbejde & Sikkerhed (72-102) ---
   {
     id: 'rd-72',
     category: 'Brandmandens Arbejde',
@@ -621,14 +621,13 @@ export const ALL_QUESTIONS: Flashcard[] = [
     question: 'Trykflasker inddeles farvemæssigt i fire hovedgrupper efter gasindholdet, nævn farver og tilhørende gruppe?',
     answer: 'Grøn = inaktiv\nBlå = oxiderende\nRød = brandfarlig\nGul = giftig',
   },
-
-  // --- SINE & Radiokommunikation (102-106) ---
   {
-    id: 'sine-102',
-    category: 'SINE & Ledelse',
+    id: 'rd-102',
+    category: 'Røgdykkerens Arbejde & Sikkerhed',
     question: 'Hvilken farve har en acetylenflaske?',
     answer: 'Rødbrun krop og skuldre',
   },
+  // --- SINE & Radiokommunikation (103-106) ---
   {
     id: 'sine-103',
     category: 'SINE & Ledelse',
@@ -776,7 +775,7 @@ export const DEFAULT_DECKS: Deck[] = [
     description: 'Sikkerhed, dehydrering, personklasser, trykflasker og skibsbrande',
     icon: 'HeartPulse',
     color: 'from-rose-600 to-red-500',
-    cards: ALL_QUESTIONS.slice(71, 101),
+    cards: ALL_QUESTIONS.slice(71, 102),
   },
   {
     id: 'sine-radiokommunikation',
@@ -784,7 +783,7 @@ export const DEFAULT_DECKS: Deck[] = [
     description: 'SINE opkaldsprocedurer, Gateway, Repeater og ledelse på skadestedet',
     icon: 'Radio',
     color: 'from-violet-600 to-purple-500',
-    cards: ALL_QUESTIONS.slice(101, 106),
+    cards: ALL_QUESTIONS.slice(102, 106),
   },
   {
     id: 'frigoerelse-koerettoejer',

@@ -9,7 +9,13 @@ export const DeckProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       const saved = localStorage.getItem(STORAGE_KEY)
       if (saved) {
-        return JSON.parse(saved)
+        const parsed: Deck[] = JSON.parse(saved)
+        const standardDecks = DEFAULT_DECKS.map((defDeck) => {
+          const existing = parsed.find((p) => p.id === defDeck.id)
+          return existing && existing.isCustom ? existing : defDeck
+        })
+        const customDecks = parsed.filter((p) => p.isCustom)
+        return [...standardDecks, ...customDecks]
       }
     } catch (e) {
       console.error('Failed to load decks from localStorage', e)

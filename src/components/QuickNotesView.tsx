@@ -1,4 +1,4 @@
-﻿import React, { useState, Suspense, lazy } from 'react'
+import React, { useState, Suspense, lazy } from 'react'
 import { useDeck } from '../context/useDeck'
 import {
   Menu,
@@ -312,11 +312,12 @@ export const QuickNotesView: React.FC = () => {
         <div className="flex items-center gap-2">
           <button
             onClick={toggleSidebar}
-            className="w-10 h-10 flex items-center justify-center text-slate-300 hover:text-white rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-slate-700 shadow-sm transition-all active:scale-95 cursor-pointer flex-shrink-0"
+            className="flex items-center gap-1.5 px-3 py-2 text-xs font-bold text-amber-300 hover:text-white bg-slate-900/90 hover:bg-slate-850 border border-amber-500/40 hover:border-amber-400 rounded-xl shadow-lg shadow-amber-500/10 transition-all active:scale-95 cursor-pointer flex-shrink-0 group"
             title="Åbn emne-menu"
             aria-label="Åbn emne-menu"
           >
-            <Menu className="w-6 h-6" />
+            <Menu className="w-4 h-4 text-amber-400 group-hover:scale-110 transition-transform" />
+            <span>Menu</span>
           </button>
 
           {selectedNoteId ? (

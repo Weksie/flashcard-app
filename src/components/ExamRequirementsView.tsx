@@ -23,11 +23,12 @@ export const ExamRequirementsView: React.FC = () => {
         <div className="flex items-center gap-2">
           <button
             onClick={toggleSidebar}
-            className="w-10 h-10 flex items-center justify-center text-slate-300 hover:text-white rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-slate-700 shadow-sm transition-all active:scale-95 cursor-pointer flex-shrink-0"
+            className="flex items-center gap-1.5 px-3 py-2 text-xs font-bold text-amber-300 hover:text-white bg-slate-900/90 hover:bg-slate-850 border border-amber-500/40 hover:border-amber-400 rounded-xl shadow-lg shadow-amber-500/10 transition-all active:scale-95 cursor-pointer flex-shrink-0 group"
             title="Åbn emne-menu"
             aria-label="Åbn emne-menu"
           >
-            <Menu className="w-6 h-6" />
+            <Menu className="w-4 h-4 text-amber-400 group-hover:scale-110 transition-transform" />
+            <span>Menu</span>
           </button>
           <button
             onClick={() => setScreen('decks')}
@@ -182,14 +183,21 @@ export const ExamRequirementsView: React.FC = () => {
         </section>
       </div>
 
-      {/* Start Quiz Action Button */}
-      <div className="mt-auto pt-2 pb-6">
+      {/* Action Buttons */}
+      <div className="mt-auto pt-2 pb-6 space-y-2">
+        <button
+          onClick={() => setScreen('exam-simulation')}
+          className="w-full py-3 px-4 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-slate-950 font-bold rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-orange-600/20 transition-all cursor-pointer"
+        >
+          <Award className="w-4 h-4 text-slate-950" />
+          <span>Start Komplet Eksamenstræning (A, B & C)</span>
+        </button>
         <button
           onClick={() => setScreen('decks')}
-          className="w-full py-3 px-4 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-white font-semibold rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-orange-600/20 transition-all cursor-pointer"
+          className="w-full py-2.5 px-4 bg-slate-900 hover:bg-slate-800 text-slate-300 font-medium rounded-xl flex items-center justify-center gap-2 border border-slate-800 transition-colors cursor-pointer text-xs"
         >
           <span>Gå til C-spørgsmålene</span>
-          <ArrowRight className="w-4 h-4" />
+          <ArrowRight className="w-3.5 h-3.5" />
         </button>
       </div>
     </div>
