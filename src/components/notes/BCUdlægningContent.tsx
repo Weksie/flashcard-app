@@ -145,13 +145,13 @@ export const BCUdlægningContent: React.FC = () => {
   return (
     <div className='space-y-4'>
       {/* Header */}
-      <div className='bg-gradient-to-r from-blue-600/90 to-indigo-600/90 rounded-2xl p-4 shadow-xl border border-blue-500/30'>
+      <div className='bg-slate-900/95 rounded-2xl p-4 shadow-xl border border-blue-500/30'>
         <div className='flex items-center gap-3'>
-          <div className='bg-white/20 p-2 rounded-xl'><Waves className='w-6 h-6 text-white' /></div>
+          <div className='bg-blue-500/20 border border-blue-500/30 p-2.5 rounded-xl'><Waves className='w-6 h-6 text-blue-400' /></div>
           <div>
-            <span className='inline-flex items-center gap-1 px-2 py-0.5 rounded-lg bg-blue-500/20 border border-blue-400/30 text-[10px] font-bold text-blue-200 uppercase tracking-wider'>Slangeudlægning</span>
+            <span className='inline-flex items-center gap-1 px-2 py-0.5 rounded-lg bg-blue-500/20 border border-blue-400/30 text-[10px] font-bold text-blue-300 uppercase tracking-wider'>Slangeudlægning</span>
             <h1 className='text-lg font-bold text-white tracking-tight'>B/C udlægning</h1>
-            <p className='text-sm font-semibold text-blue-200 mt-0.5'>Normaltryksslangen fra pumpe (med trykluft)</p>
+            <p className='text-sm font-semibold text-blue-300 mt-0.5'>Normaltryksslangen fra pumpe (med trykluft)</p>
           </div>
         </div>
       </div>

@@ -190,31 +190,31 @@ export const AbQuestionsView: React.FC = () => {
   return (
     <div className="flex-1 flex flex-col min-h-0 overflow-y-auto px-4 pt-safe pb-safe max-w-md mx-auto w-full text-slate-100">
       {/* Top Header */}
-      <header className="pt-2 pb-3 flex items-center justify-between sticky top-0 bg-slate-950/95 backdrop-blur-md z-20 -mx-4 px-4 border-b border-slate-900/80 mb-3">
+      <header className="pt-2.5 pb-2.5 flex items-center justify-between sticky top-0 bg-[#0b0f19]/90 backdrop-blur-md z-20 -mx-4 px-4 border-b border-slate-800/80 mb-3">
         <div className="flex items-center gap-2">
           <button
             onClick={toggleSidebar}
-            className="flex items-center gap-1.5 px-3 py-2 text-xs font-bold text-amber-300 hover:text-white bg-slate-900/90 hover:bg-slate-850 border border-amber-500/40 hover:border-amber-400 rounded-xl shadow-lg shadow-amber-500/10 transition-all active:scale-95 cursor-pointer flex-shrink-0 group"
+            className="flex items-center gap-1.5 px-3 py-2 text-xs font-bold text-amber-300 hover:text-white bg-slate-900/90 hover:bg-slate-850 border border-amber-500/40 hover:border-amber-400 rounded-xl shadow-md transition-all active:scale-95 cursor-pointer flex-shrink-0 min-h-[40px]"
             title="Åbn emne-menu"
             aria-label="Åbn emne-menu"
           >
-            <Menu className="w-4 h-4 text-amber-400 group-hover:scale-110 transition-transform" />
-            <span>Menu</span>
+            <Menu className="w-4 h-4 text-amber-400" />
+            <span className="font-semibold">Menu</span>
           </button>
 
           {selectedQuestionId !== null ? (
             <button
               onClick={() => setSelectedQuestionId(null)}
-              className="flex items-center gap-1 text-xs text-amber-400 hover:text-amber-300 transition-colors py-1 px-2 rounded-lg bg-slate-900 border border-slate-800 hover:border-amber-500/30 cursor-pointer"
+              className="flex items-center gap-1.5 text-xs font-semibold text-amber-300 hover:text-white transition-all py-1.5 px-2.5 rounded-xl bg-slate-900 border border-slate-800 hover:border-amber-500/30 cursor-pointer min-h-[40px] active:scale-95"
               title="Tilbage til oversigten"
             >
-              <ChevronLeft className="w-4 h-4" />
+              <ChevronLeft className="w-4 h-4 text-amber-400" />
               <span>Oversigt</span>
             </button>
           ) : (
             <button
               onClick={() => setScreen('decks')}
-              className="flex items-center gap-1 text-xs text-slate-400 hover:text-amber-400 transition-colors py-1 px-1.5 rounded-lg cursor-pointer"
+              className="flex items-center gap-1.5 text-xs font-semibold text-slate-300 hover:text-amber-300 transition-colors py-1.5 px-2 rounded-xl cursor-pointer min-h-[40px]"
               title="Tilbage til spørgsmål"
             >
               <ChevronLeft className="w-4 h-4" />
@@ -225,11 +225,11 @@ export const AbQuestionsView: React.FC = () => {
 
         <div className="flex items-center gap-1.5">
           <div className="text-right">
-            <div className="text-xs font-bold text-white flex items-center gap-1 justify-end">
+            <div className="text-xs font-bold text-white flex items-center gap-1 justify-end font-display">
               <ClipboardList className="w-3.5 h-3.5 text-amber-400" />
               <span>A- & B-Spørgsmål</span>
             </div>
-            <p className="text-[10px] text-slate-400">
+            <p className="text-[10px] text-slate-400 font-medium">
               {activeQuestion ? `Spørgsmål ${activeQuestion.questionNumber} af 15` : 'Praktik & Teori'}
             </p>
           </div>
@@ -242,50 +242,50 @@ export const AbQuestionsView: React.FC = () => {
       {selectedQuestionId === null ? (
         <div className="space-y-4 pb-8">
           {/* Main Hero Card */}
-          <div className="bg-gradient-to-br from-amber-500/15 via-slate-900 to-slate-900/90 border border-amber-500/30 rounded-2xl p-4 shadow-xl relative overflow-hidden">
+          <div className="bg-gradient-to-br from-amber-500/20 via-slate-900 to-slate-950 border border-amber-500/30 rounded-3xl p-4 sm:p-5 shadow-xl relative overflow-hidden">
             <div className="flex items-center justify-between mb-2">
               <div className="flex items-center gap-2">
-                <span className="text-[10px] font-bold text-amber-400 uppercase tracking-widest bg-amber-500/15 border border-amber-500/30 px-2 py-0.5 rounded-md">
+                <span className="text-[10px] font-bold text-amber-300 uppercase tracking-widest bg-amber-500/20 border border-amber-500/30 px-2.5 py-0.5 rounded-full font-display">
                   Certificeringsprøve
                 </span>
-                <span className="text-[10px] text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-md font-medium">
+                <span className="text-[10px] text-emerald-300 bg-emerald-500/15 border border-emerald-500/25 px-2 py-0.5 rounded-full font-semibold">
                   Juni 2026
                 </span>
               </div>
               <button
                 onClick={() => setShowExamRules((prev) => !prev)}
-                className="text-[11px] text-amber-400 hover:text-amber-300 flex items-center gap-1 bg-slate-900/80 px-2 py-1 rounded-lg border border-amber-500/20 hover:border-amber-500/40 transition-colors cursor-pointer"
+                className="text-[11px] text-amber-400 hover:text-amber-300 flex items-center gap-1.5 bg-slate-900/90 px-2.5 py-1 rounded-xl border border-amber-500/25 hover:border-amber-500/40 transition-colors cursor-pointer min-h-[34px] font-medium"
               >
-                <Info className="w-3.5 h-3.5" />
+                <Info className="w-3.5 h-3.5 text-amber-400" />
                 <span>{showExamRules ? 'Skjul regler' : 'Prøvevejledning'}</span>
               </button>
             </div>
 
-            <h1 className="text-lg font-bold text-white tracking-tight">
+            <h1 className="text-lg sm:text-xl font-extrabold text-white tracking-tight font-display">
               A- og B-Eksamensspørgsmål
             </h1>
-            <p className="text-xs text-slate-300 mt-1 leading-relaxed">
+            <p className="text-xs text-slate-300 mt-1 leading-relaxed font-medium">
               Prøve til certificering i Indsatsuddannelsen. Gennemgå de 15 officielle spørgsmålssæt med specifikke opgaver og kompetencemål for opgave A og B.
             </p>
-            <p className="text-xs text-red-300 mt-1.5 leading-relaxed">
-              Vær opmærksom på at der kan forkomme fejl i nedenstående materiale, og at der ikke nødvendigvis står alt du skal bruge til din eksamen. Dette er ikke en officiel App, men blot et hjælpe middel.
+            <p className="text-[11px] text-rose-300/90 mt-2 bg-rose-500/10 border border-rose-500/20 p-2.5 rounded-xl leading-relaxed">
+              Vær opmærksom på at dette er et supplerende hjælpemiddel. Følg altid instruktørens og censors anvisninger under certificeringen.
             </p>
 
             {/* Overall progress indicator */}
-            <div className="mt-3 pt-3 border-t border-slate-800/80">
-              <div className="flex items-center justify-between text-xs mb-1.5">
-                <span className="text-[11px] text-slate-300 font-medium flex items-center gap-1.5">
+            <div className="mt-3.5 pt-3 border-t border-slate-800/80">
+              <div className="flex items-center justify-between text-xs mb-1.5 font-medium">
+                <span className="text-[11px] text-slate-300 font-semibold flex items-center gap-1.5 font-display">
                   <Sparkles className="w-3.5 h-3.5 text-amber-400" />
                   Mestring af mål ({overallProgress.checked} / {overallProgress.total})
                 </span>
-                <span className="text-xs font-bold text-amber-400">
+                <span className="text-xs font-bold text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded-full border border-amber-500/20">
                   {overallProgress.percent}%
                 </span>
               </div>
-              <div className="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden">
+              <div className="w-full h-2 bg-slate-800 rounded-full overflow-hidden p-0.5 ring-1 ring-white/5">
                 <div
-                  className="h-full bg-gradient-to-r from-amber-500 to-emerald-400 rounded-full transition-all duration-300"
-                  style={{ width: `${overallProgress.percent}%` }}
+                  className="h-full bg-gradient-to-r from-amber-500 via-orange-400 to-emerald-400 rounded-full transition-all duration-500"
+                  style={{ width: `${Math.max(overallProgress.percent, 2)}%` }}
                 />
               </div>
             </div>
@@ -294,14 +294,14 @@ export const AbQuestionsView: React.FC = () => {
             <div className="mt-3.5 pt-3 border-t border-slate-800/80 flex flex-col gap-2">
               <button
                 onClick={() => setScreen('exam-simulation')}
-                className="w-full py-2.5 px-3 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-bold text-xs flex items-center justify-center gap-2 shadow-lg shadow-amber-500/20 transition-all active:scale-[0.99] cursor-pointer"
+                className="w-full min-h-[46px] py-2.5 px-3 rounded-2xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg shadow-amber-500/20 transition-all active:scale-[0.98] cursor-pointer font-display"
               >
                 <Award className="w-4 h-4" />
                 <span>Start Eksamenstræning med A, B og C (Simulator)</span>
               </button>
               <button
                 onClick={handleDrawRandomQuestion}
-                className="w-full py-2 px-3 rounded-xl bg-slate-800/80 hover:bg-slate-800 text-slate-300 font-semibold text-xs flex items-center justify-center gap-2 border border-slate-700 transition-colors cursor-pointer"
+                className="w-full min-h-[42px] py-2 px-3 rounded-2xl bg-slate-850 hover:bg-slate-800 text-slate-200 font-semibold text-xs flex items-center justify-center gap-2 border border-slate-700/80 transition-all active:scale-[0.98] cursor-pointer shadow-sm"
               >
                 <Shuffle className="w-3.5 h-3.5 text-amber-400" />
                 <span>Træk et tilfældigt A/B-spørgsmål her</span>

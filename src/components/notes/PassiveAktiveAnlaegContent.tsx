@@ -148,19 +148,19 @@ const sections = [
 return (
     <div className="space-y-4 p-4">
       {/* Header */}
-      <div className="bg-gradient-to-r from-blue-600/90 to-purple-600/90 rounded-2xl p-4 shadow-xl border border-blue-500/30">
+      <div className="bg-slate-900/95 border border-blue-500/30 rounded-2xl p-4 shadow-xl">
         <div className="flex items-center gap-3">
-          <div className="bg-white/20 p-2 rounded-xl">
-            <Shield className="w-6 h-6 text-white" />
+          <div className="bg-blue-500/20 border border-blue-500/30 p-2.5 rounded-xl">
+            <Shield className="w-6 h-6 text-blue-400" />
           </div>
           <div>
-            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg bg-blue-500/20 border border-blue-400/30 text-[10px] font-bold text-blue-200 uppercase tracking-wider">
+            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg bg-blue-500/20 border border-blue-400/30 text-[10px] font-bold text-blue-300 uppercase tracking-wider">
               Brandsikring
             </span>
             <h1 className="text-lg font-bold text-white tracking-tight">
               Passive & Aktive Anlæg
             </h1>
-            <p className="text-xs text-blue-100/80 mt-0.5">Brandsikringsanlæg i bygninger</p>
+            <p className="text-xs text-slate-300 mt-0.5">Brandsikringsanlæg i bygninger</p>
           </div>
         </div>
       </div>

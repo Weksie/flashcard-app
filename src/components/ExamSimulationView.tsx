@@ -203,20 +203,20 @@ export const ExamSimulationView: React.FC = () => {
   return (
     <div className="flex-1 flex flex-col min-h-0 overflow-y-auto px-4 pt-safe pb-safe max-w-md mx-auto w-full text-slate-100">
       {/* Top Navigation Bar */}
-      <header className="pt-2 pb-3 flex items-center justify-between sticky top-0 bg-slate-950/90 backdrop-blur-md z-20 -mx-4 px-4 border-b border-slate-900/60 mb-3">
+      <header className="pt-2.5 pb-2.5 flex items-center justify-between sticky top-0 bg-[#0b0f19]/90 backdrop-blur-md z-20 -mx-4 px-4 border-b border-slate-800/80 mb-3">
         <div className="flex items-center gap-2">
           <button
             onClick={toggleSidebar}
-            className="flex items-center gap-1.5 px-3 py-2 text-xs font-bold text-amber-300 hover:text-white bg-slate-900/90 hover:bg-slate-850 border border-amber-500/40 hover:border-amber-400 rounded-xl shadow-lg shadow-amber-500/10 transition-all active:scale-95 cursor-pointer flex-shrink-0 group"
+            className="flex items-center gap-1.5 px-3 py-2 text-xs font-bold text-amber-300 hover:text-white bg-slate-900/90 hover:bg-slate-800 border border-amber-500/40 hover:border-amber-400 rounded-xl shadow-md transition-all active:scale-95 cursor-pointer flex-shrink-0 min-h-[40px]"
             title="Åbn emne-menu"
             aria-label="Åbn emne-menu"
           >
-            <Menu className="w-4 h-4 text-amber-400 group-hover:scale-110 transition-transform" />
-            <span>Menu</span>
+            <Menu className="w-4 h-4 text-amber-400" />
+            <span className="font-semibold">Menu</span>
           </button>
           <button
             onClick={() => setScreen('decks')}
-            className="flex items-center gap-1 text-xs text-slate-400 hover:text-amber-400 transition-colors py-1.5 pr-2 rounded-lg cursor-pointer"
+            className="flex items-center gap-1.5 text-xs font-semibold text-slate-300 hover:text-amber-300 transition-colors py-1.5 px-2 rounded-xl cursor-pointer min-h-[40px]"
           >
             <ChevronLeft className="w-4 h-4" />
             <span>Forside</span>
@@ -231,57 +231,57 @@ export const ExamSimulationView: React.FC = () => {
                   setStep('draw')
                 }
               }}
-              className="flex items-center gap-1 text-[11px] font-medium text-slate-400 hover:text-rose-400 bg-slate-900 border border-slate-800 hover:border-rose-500/30 px-2.5 py-1.5 rounded-xl transition-all cursor-pointer"
+              className="flex items-center gap-1.5 text-[11px] font-semibold text-slate-300 hover:text-rose-300 bg-slate-900/90 border border-slate-800 hover:border-rose-500/40 px-2.5 py-1.5 rounded-xl transition-all cursor-pointer min-h-[36px] active:scale-95"
             >
-              <RotateCcw className="w-3 h-3" />
+              <RotateCcw className="w-3.5 h-3.5 text-rose-400" />
               <span>Afbryd</span>
             </button>
           )}
 
-          <span className="text-[11px] font-semibold text-amber-400 bg-amber-500/10 border border-amber-500/20 px-2.5 py-1 rounded-full flex items-center gap-1">
-            <Flame className="w-3 h-3 text-amber-400" />
-            <span>Eksamenstræning</span>
+          <span className="text-[11px] font-bold text-amber-300 bg-amber-500/15 border border-amber-500/30 px-2.5 py-1 rounded-full flex items-center gap-1.5 uppercase font-display tracking-wider">
+            <Flame className="w-3.5 h-3.5 text-amber-400" />
+            <span>Simulation</span>
           </span>
         </div>
       </header>
 
       {/* Mini Breadcrumb / Stage Tracker */}
-      <div className="flex items-center justify-between bg-slate-900/70 border border-slate-800/80 rounded-xl p-2 mb-4 text-[11px]">
+      <div className="flex items-center justify-between bg-slate-900/90 border border-slate-800/90 rounded-2xl p-2.5 mb-4 text-xs font-display">
         <button
           disabled={step === 'draw'}
           onClick={() => setStep('taskA')}
-          className={`flex items-center gap-1 font-semibold transition-colors cursor-pointer ${step === 'taskA' ? 'text-amber-400' : evalA.isPassed ? 'text-emerald-400' : 'text-slate-500'
+          className={`flex items-center gap-1 font-bold transition-colors cursor-pointer ${step === 'taskA' ? 'text-amber-400' : evalA.isPassed ? 'text-emerald-400' : 'text-slate-500'
             }`}
         >
           <span>A: Praktisk</span>
-          {evalA.isPassed && <Check className="w-3 h-3 text-emerald-400" />}
+          {evalA.isPassed && <Check className="w-3.5 h-3.5 text-emerald-400" />}
         </button>
         <span className="text-slate-600">→</span>
         <button
           disabled={step === 'draw' || !evalA.isPassed}
           onClick={() => setStep('taskB')}
-          className={`flex items-center gap-1 font-semibold transition-colors cursor-pointer ${step === 'taskB' ? 'text-amber-400' : evalB.isPassed ? 'text-emerald-400' : 'text-slate-500'
+          className={`flex items-center gap-1 font-bold transition-colors cursor-pointer ${step === 'taskB' ? 'text-amber-400' : evalB.isPassed ? 'text-emerald-400' : 'text-slate-500'
             }`}
         >
           <span>B: Opgave B</span>
-          {evalB.isPassed && <Check className="w-3 h-3 text-emerald-400" />}
+          {evalB.isPassed && <Check className="w-3.5 h-3.5 text-emerald-400" />}
         </button>
         <span className="text-slate-600">→</span>
         <button
           disabled={step === 'draw' || !evalB.isPassed}
           onClick={() => setStep('taskC')}
-          className={`flex items-center gap-1 font-semibold transition-colors cursor-pointer ${step === 'taskC' ? 'text-amber-400' : isCPassed ? 'text-emerald-400' : 'text-slate-500'
+          className={`flex items-center gap-1 font-bold transition-colors cursor-pointer ${step === 'taskC' ? 'text-amber-400' : isCPassed ? 'text-emerald-400' : 'text-slate-500'
             }`}
         >
           <span>C: 12 Spørgsmål</span>
-          {isCPassed && <Check className="w-3 h-3 text-emerald-400" />}
+          {isCPassed && <Check className="w-3.5 h-3.5 text-emerald-400" />}
         </button>
         <span className="text-slate-600">→</span>
         <span
-          className={`font-semibold ${step === 'results' ? 'text-amber-400' : 'text-slate-500'
+          className={`font-bold ${step === 'results' ? 'text-amber-400' : 'text-slate-500'
             }`}
         >
-          Bedømmelse
+          Resultat
         </span>
       </div>
 
@@ -291,30 +291,30 @@ export const ExamSimulationView: React.FC = () => {
       {step === 'draw' && (
         <div className="space-y-4 pb-8 animate-fadeIn">
           {/* Hero Banner */}
-          <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-amber-500/20 via-slate-900 to-slate-950 border border-amber-500/30 p-4 shadow-xl">
+          <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-amber-500/20 via-slate-900 to-slate-950 border border-amber-500/30 p-4 sm:p-5 shadow-xl">
             <div className="flex items-start gap-3">
-              <div className="w-10 h-10 rounded-xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-amber-400 flex-shrink-0">
-                <GraduationCap className="w-5 h-5" />
+              <div className="w-11 h-11 rounded-2xl bg-amber-500/25 border border-amber-500/40 flex items-center justify-center text-amber-300 flex-shrink-0 shadow-inner">
+                <GraduationCap className="w-6 h-6 text-amber-400" />
               </div>
               <div>
-                <h1 className="text-lg font-bold text-white tracking-tight">
+                <h1 className="text-lg sm:text-xl font-extrabold text-white tracking-tight font-display">
                   Prøvesimulering til FUI
                 </h1>
-                <p className="text-xs text-amber-200/90 mt-0.5">
-                  simulation af A-, B- og C-prøven
+                <p className="text-xs text-amber-300/90 font-medium mt-0.5">
+                  Simulation af A-, B- og C-prøven med censorkrav
                 </p>
               </div>
             </div>
-            <div className="mt-3.5 bg-slate-950/70 border border-slate-800/80 rounded-xl p-3 text-xs text-slate-300 space-y-1.5">
-              <div className="flex items-center gap-2 font-medium text-amber-300">
-                <Info className="w-3.5 h-3.5 text-amber-400 flex-shrink-0" />
+            <div className="mt-3.5 bg-slate-950/70 border border-slate-800 rounded-2xl p-3.5 text-xs text-slate-300 space-y-2">
+              <div className="flex items-center gap-2 font-bold text-amber-300 font-display">
+                <Info className="w-4 h-4 text-amber-400 flex-shrink-0" />
                 <span>Officielle eksamensregler:</span>
               </div>
-              <p className="text-[11px] text-slate-400 leading-relaxed">
-                Prøven gennemføres i den rækkefølge, du vælger at starte med. Eksaminator læser emnet med fed skrift. For at bestå skal du gennemføre Opgave A og B tilfredsstillende og opnå <strong>mindst 29 ud af 48 point på C-spørgsmålene</strong>.
+              <p className="text-xs text-slate-300 leading-relaxed font-medium">
+                Prøven gennemføres i den rækkefølge, du vælger at starte med. For at bestå skal du gennemføre Opgave A og B tilfredsstillende og opnå <strong className="text-amber-300">mindst 29 ud af 48 point på C-spørgsmålene</strong>.
               </p>
-              <p className="text-[11px] text-red-400 leading-relaxed">
-                Husk at testen ikke er officiel, og kan derfor vise resultater der ikke matcher den officielle bedømmelse. Den er udelukkende ment til at træne dig i at huske og anvende viden om de forskellige scenarier der kan optræde til eksamen.
+              <p className="text-[11px] text-rose-300/90 pt-1 border-t border-slate-800/80 leading-relaxed">
+                Dette er en træningssimulator designet til at styrke din paratviden og metodiske fremgangsmåde.
               </p>
             </div>
           </div>

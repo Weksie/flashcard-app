@@ -33,19 +33,19 @@ export const TrykluftapparatContent: React.FC = () => {
 return (
     <div className="space-y-4 p-4">
       {/* Header */}
-      <div className="bg-gradient-to-r from-amber-600/90 to-orange-600/90 rounded-2xl p-4 shadow-xl border border-amber-500/30">
+      <div className="bg-slate-900/95 border border-amber-500/30 rounded-2xl p-4 shadow-xl">
         <div className="flex items-center gap-3">
-          <div className="bg-white/20 p-2 rounded-xl">
-            <Wind className="w-6 h-6 text-white" />
+          <div className="bg-amber-500/20 border border-amber-500/30 p-2.5 rounded-xl">
+            <Wind className="w-6 h-6 text-amber-400" />
           </div>
           <div>
-            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg bg-amber-500/20 border border-amber-400/30 text-[10px] font-bold text-amber-200 uppercase tracking-wider">
+            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg bg-amber-500/20 border border-amber-400/30 text-[10px] font-bold text-amber-300 uppercase tracking-wider">
               Materiel
             </span>
             <h1 className="text-lg font-bold text-white tracking-tight">
               Trykluftapparat
             </h1>
-            <p className="text-xs text-amber-100/80 mt-0.5">Rygmejse, flaske, maske & lungeautomat</p>
+            <p className="text-xs text-slate-300 mt-0.5">Rygmejse, flaske, maske & lungeautomat</p>
           </div>
         </div>
       </div>

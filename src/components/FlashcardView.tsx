@@ -232,26 +232,26 @@ export const FlashcardView: React.FC = () => {
   return (
     <div className="flex-1 flex flex-col min-h-0 px-4 pt-safe pb-safe max-w-md mx-auto w-full select-none overflow-hidden">
       {/* Top Navigation */}
-      <header className="pt-2 pb-2 flex items-center justify-between gap-2">
+      <header className="pt-2 pb-2.5 flex items-center justify-between gap-2 border-b border-slate-800/60 mb-2">
         <button
           onClick={() => setScreen('decks')}
-          className="p-2 -ml-2 rounded-full text-slate-400 hover:text-white active:bg-slate-800 transition-colors"
+          className="w-10 h-10 flex items-center justify-center rounded-xl bg-slate-900/80 hover:bg-slate-800 border border-slate-800 text-slate-300 hover:text-white transition-all active:scale-95 cursor-pointer"
           aria-label="Back to decks"
         >
-          <ChevronLeft className="w-6 h-6" />
+          <ChevronLeft className="w-5 h-5" />
         </button>
 
         <div className="text-center flex-1 min-w-0 px-2">
-          <h2 className="text-sm font-bold text-white truncate">
+          <h2 className="text-sm font-bold text-white truncate font-display">
             {activeDeck?.title || 'Træning'}
           </h2>
-          <div className="flex items-center justify-center gap-1 text-xs text-slate-400 font-medium">
-            <span>
+          <div className="flex items-center justify-center gap-1.5 text-xs text-slate-400 font-medium">
+            <span className="font-semibold text-slate-300">
               Kort {currentIndex + 1} af {cards.length}
             </span>
             {activeDeck && activeDeck.cards.length > cards.length && (
-              <span className="text-[10px] text-amber-400/90 font-normal">
-                ({activeDeck.cards.length - cards.length} mestrede udeladt)
+              <span className="text-[10px] text-amber-400 font-medium bg-amber-500/10 px-1.5 py-0.5 rounded-full border border-amber-500/20">
+                +{activeDeck.cards.length - cards.length} mestret
               </span>
             )}
           </div>
@@ -259,28 +259,28 @@ export const FlashcardView: React.FC = () => {
 
         <button
           onClick={toggleShuffle}
-          className={`p-2 rounded-full transition-colors ${
+          className={`w-10 h-10 flex items-center justify-center rounded-xl border transition-all cursor-pointer active:scale-95 ${
             isShuffled
-              ? 'bg-indigo-600/30 text-indigo-400'
-              : 'text-slate-400 hover:text-white active:bg-slate-800'
+              ? 'bg-amber-500/20 border-amber-500/40 text-amber-300 shadow-md shadow-amber-500/10'
+              : 'bg-slate-900/80 border-slate-800 text-slate-400 hover:text-white hover:bg-slate-800'
           }`}
-          title={isShuffled ? 'Shuffled' : 'Shuffle cards'}
+          title={isShuffled ? 'Blanding aktiv' : 'Bland kort'}
         >
           <Shuffle className="w-4 h-4" />
         </button>
       </header>
 
       {/* Progress Bar */}
-      <div className="w-full h-1.5 bg-slate-800/80 rounded-full overflow-hidden mb-3">
+      <div className="w-full h-2 bg-slate-800/80 rounded-full overflow-hidden mb-3 p-0.5 ring-1 ring-white/5">
         <div
-          className="h-full bg-indigo-500 rounded-full transition-all duration-300"
-          style={{ width: `${progressPercent}%` }}
+          className="h-full bg-gradient-to-r from-amber-500 via-orange-400 to-emerald-400 rounded-full transition-all duration-300 ease-out shadow-sm"
+          style={{ width: `${Math.max(progressPercent, 3)}%` }}
         />
       </div>
 
       {/* Flashcard Area */}
       <div
-        className="flex-1 flex flex-col justify-center items-center relative perspective-1000 py-2 min-h-[360px]"
+        className="flex-1 flex flex-col justify-center items-center relative perspective-1000 py-1 min-h-[380px]"
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
         onMouseLeave={handleMouseUp}
@@ -307,13 +307,13 @@ export const FlashcardView: React.FC = () => {
               : 'transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
             cursor: isDragging ? 'grabbing' : 'grab',
           }}
-          className="relative w-full h-full max-h-[460px] preserve-3d transition-transform duration-500 rounded-3xl cursor-pointer"
+          className="relative w-full h-full max-h-[470px] preserve-3d transition-transform duration-500 rounded-3xl cursor-pointer"
         >
           {/* SWIPE OVERLAY INDICATORS */}
           {/* Mastered Badge (Right Swipe) */}
           <div
             style={{ opacity: isAnimatingOut === 'right' ? 1 : rightOpacity }}
-            className="absolute top-6 left-6 z-50 pointer-events-none px-3.5 py-1.5 rounded-xl border-2 border-emerald-400 bg-emerald-500/20 text-emerald-400 font-extrabold text-sm uppercase tracking-wider shadow-lg transform -rotate-12 transition-opacity"
+            className="absolute top-6 left-6 z-50 pointer-events-none px-4 py-2 rounded-2xl border-2 border-emerald-400 bg-emerald-500/25 text-emerald-300 font-extrabold text-sm uppercase tracking-wider shadow-xl transform -rotate-12 transition-opacity font-display"
           >
             Kan det ✓
           </div>
@@ -321,21 +321,21 @@ export const FlashcardView: React.FC = () => {
           {/* Learning Badge (Left Swipe) */}
           <div
             style={{ opacity: isAnimatingOut === 'left' ? 1 : leftOpacity }}
-            className="absolute top-6 right-6 z-50 pointer-events-none px-3.5 py-1.5 rounded-xl border-2 border-rose-400 bg-rose-500/20 text-rose-400 font-extrabold text-sm uppercase tracking-wider shadow-lg transform rotate-12 transition-opacity"
+            className="absolute top-6 right-6 z-50 pointer-events-none px-4 py-2 rounded-2xl border-2 border-rose-400 bg-rose-500/25 text-rose-300 font-extrabold text-sm uppercase tracking-wider shadow-xl transform rotate-12 transition-opacity font-display"
           >
             Skal øves ✕
           </div>
 
           {/* FRONT OF CARD (Question) */}
           <div
-            className={`absolute inset-0 w-full h-full backface-hidden rounded-3xl p-6 flex flex-col justify-between border border-slate-800 bg-gradient-to-b from-slate-900 to-slate-925 shadow-2xl transition-all duration-300 ${
+            className={`absolute inset-0 w-full h-full backface-hidden rounded-3xl p-6 sm:p-7 flex flex-col justify-between border border-slate-750 bg-gradient-to-b from-slate-900 via-slate-900 to-[#0c1220] shadow-[0_16px_40px_-8px_rgba(0,0,0,0.8),inset_0_1px_0_rgba(255,255,255,0.08)] transition-all duration-300 ${
               isFlipped ? 'rotate-y-180 pointer-events-none' : ''
             }`}
           >
             {/* Front Header */}
             <div className="flex items-center justify-between">
-              <span className="px-3 py-1 rounded-full text-[11px] font-semibold tracking-wide bg-amber-500/15 text-amber-400 border border-amber-500/20">
-                {currentCard.category || 'SPØRGSMÅL'}
+              <span className="px-3.5 py-1.5 rounded-full text-[11px] font-bold tracking-wide bg-amber-500/15 text-amber-300 border border-amber-500/30 uppercase font-display">
+                {currentCard.category || 'C-SPØRGSMÅL'}
               </span>
 
               {currentCard.hint && (
@@ -344,67 +344,68 @@ export const FlashcardView: React.FC = () => {
                     e.stopPropagation()
                     setShowHint((h) => !h)
                   }}
-                  className={`flex items-center gap-1 text-xs px-2.5 py-1 rounded-full border transition-colors ${
+                  className={`flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full border transition-all cursor-pointer ${
                     showHint
-                      ? 'bg-amber-500/20 text-amber-300 border-amber-500/40'
-                      : 'bg-slate-800/80 text-slate-400 border-slate-700 hover:text-amber-300'
+                      ? 'bg-amber-500/25 text-amber-300 border-amber-500/50 shadow-sm'
+                      : 'bg-slate-800/90 text-slate-300 border-slate-700 hover:text-amber-300 hover:border-amber-500/30'
                   }`}
                 >
-                  <Lightbulb className="w-3.5 h-3.5" />
-                  <span>{showHint ? 'Skjul tip' : 'Tip'}</span>
+                  <Lightbulb className="w-3.5 h-3.5 text-amber-400" />
+                  <span className="font-semibold">{showHint ? 'Skjul tip' : 'Se tip'}</span>
                 </button>
               )}
             </div>
 
             {/* Front Body (Question Text) */}
             <div className="my-auto py-4 text-center">
-              <p className="text-lg md:text-xl font-semibold text-slate-100 leading-relaxed px-2">
+              <p className="text-lg sm:text-xl font-bold text-white leading-relaxed px-1 font-display tracking-tight">
                 {currentCard.question}
               </p>
 
               {/* Collapsible Hint */}
               {showHint && currentCard.hint && (
-                <div className="mt-4 p-3 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-200 text-xs text-left animate-fadeIn">
-                  <div className="font-bold flex items-center gap-1 mb-1">
-                    <HelpCircle className="w-3.5 h-3.5" />
-                    <span>Tip</span>
+                <div className="mt-4 p-3.5 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-200 text-xs sm:text-sm text-left shadow-inner">
+                  <div className="font-bold flex items-center gap-1.5 mb-1 text-amber-400">
+                    <HelpCircle className="w-4 h-4 flex-shrink-0" />
+                    <span>Hjælpetip / Stikord:</span>
                   </div>
-                  {currentCard.hint}
+                  <p className="leading-relaxed text-amber-100/90 font-medium">{currentCard.hint}</p>
                 </div>
               )}
             </div>
 
             {/* Front Footer */}
-            <div className="flex items-center justify-center gap-2 text-xs text-slate-500 font-medium py-1">
-              <RotateCw className="w-3.5 h-3.5 animate-spin-slow" />
-              <span>Tryk for at se svaret</span>
+            <div className="flex items-center justify-center gap-2 text-xs text-slate-400 font-semibold py-1">
+              <RotateCw className="w-3.5 h-3.5 text-amber-400" />
+              <span>Tryk på kortet for at se svaret</span>
             </div>
           </div>
 
           {/* BACK OF CARD (Answer) */}
           <div
-            className={`absolute inset-0 w-full h-full backface-hidden rounded-3xl p-6 flex flex-col justify-between border border-amber-900/60 bg-gradient-to-b from-slate-900 to-slate-950 shadow-2xl transition-all duration-300 ${
+            className={`absolute inset-0 w-full h-full backface-hidden rounded-3xl p-6 sm:p-7 flex flex-col justify-between border border-emerald-500/40 bg-gradient-to-b from-[#0a1b15] via-slate-900 to-slate-950 shadow-[0_16px_40px_-8px_rgba(16,185,129,0.2),inset_0_1px_0_rgba(255,255,255,0.08)] transition-all duration-300 ${
               !isFlipped ? 'rotate-y-180 pointer-events-none' : ''
             }`}
           >
             {/* Back Header */}
             <div className="flex items-center justify-between">
-              <span className="px-3 py-1 rounded-full text-[11px] font-semibold tracking-wide bg-emerald-500/15 text-emerald-400 border border-emerald-500/20">
-                SVAR
+              <span className="px-3.5 py-1.5 rounded-full text-[11px] font-bold tracking-wide bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 uppercase font-display flex items-center gap-1.5">
+                <Check className="w-3.5 h-3.5" />
+                <span>OFFICIELT SVAR</span>
               </span>
-              <span className="text-[11px] font-medium text-slate-400">Kort {currentIndex + 1}</span>
+              <span className="text-xs font-semibold text-slate-400">Kort {currentIndex + 1}</span>
             </div>
 
             {/* Back Body (Answer Text) */}
-            <div className="my-auto py-4 text-center overflow-y-auto max-h-[260px] px-2">
-              <div className="text-base md:text-lg font-semibold text-emerald-300 leading-relaxed whitespace-pre-line text-left md:text-center">
+            <div className="my-auto py-3 text-center overflow-y-auto max-h-[280px] px-1">
+              <div className="text-base sm:text-lg font-semibold text-emerald-200 leading-relaxed whitespace-pre-line text-left">
                 {currentCard.answer}
               </div>
             </div>
 
             {/* Back Footer */}
-            <div className="flex items-center justify-center gap-2 text-xs text-amber-300/70 font-medium py-1">
-              <RotateCw className="w-3.5 h-3.5" />
+            <div className="flex items-center justify-center gap-2 text-xs text-emerald-400/80 font-semibold py-1">
+              <RotateCw className="w-3.5 h-3.5 text-emerald-400" />
               <span>Tryk for at vende tilbage</span>
             </div>
           </div>
@@ -412,47 +413,62 @@ export const FlashcardView: React.FC = () => {
       </div>
 
       {/* Swipe Tip Banner */}
-      <div className="flex items-center justify-between px-2 text-[11px] text-slate-500 font-medium py-1">
-        <span>← Swipe: Skal øves</span>
-        <span>Swipe: Kan det →</span>
+      <div className="flex items-center justify-between px-3 text-[11px] text-slate-400 font-semibold py-1.5">
+        <span className="flex items-center gap-1 text-rose-400/90">
+          <span>← Swipe venstre:</span>
+          <span className="font-bold">Skal øves</span>
+        </span>
+        <span className="flex items-center gap-1 text-emerald-400/90">
+          <span>Swipe højre:</span>
+          <span className="font-bold">Kan det →</span>
+        </span>
       </div>
 
       {/* Bottom Ergonomic Thumb Buttons */}
-      <div className="grid grid-cols-3 gap-3 pt-2 pb-3">
+      <div className="grid grid-cols-3 gap-2 sm:gap-2.5 pt-1.5 pb-2">
         {/* Still Learning / Need Review Button */}
         <button
           onClick={() => handleAnswer(false)}
-          className="flex flex-col items-center justify-center gap-1 py-3 px-2 rounded-2xl bg-rose-500/15 hover:bg-rose-500/25 active:scale-95 border border-rose-500/30 text-rose-300 transition-all cursor-pointer shadow-lg shadow-rose-950/30"
-          title="Skal øves igen (Swipe Venstre)"
+          className="min-h-[58px] min-w-0 flex flex-col items-center justify-center gap-1 py-2 px-1.5 sm:px-2 rounded-2xl bg-gradient-to-b from-rose-500/20 to-rose-600/10 hover:from-rose-500/30 hover:to-rose-600/20 active:scale-95 border border-rose-500/40 text-rose-300 transition-all cursor-pointer shadow-lg shadow-rose-950/40 group"
+          title="Skal øves igen (Tast [1] eller [←])"
         >
-          <div className="w-7 h-7 rounded-full bg-rose-500/20 flex items-center justify-center">
-            <X className="w-4 h-4 text-rose-400" />
+          <div className="w-7 h-7 rounded-full bg-rose-500/25 flex items-center justify-center group-hover:scale-105 transition-transform flex-shrink-0">
+            <X className="w-4 h-4 text-rose-300" />
           </div>
-          <span className="text-xs font-bold">Skal øves</span>
+          <div className="flex items-center gap-1 min-w-0">
+            <span className="text-xs font-bold font-display truncate">Skal øves</span>
+            <span className="hidden sm:inline text-[9px] text-rose-400/70 bg-rose-950/60 px-1 rounded flex-shrink-0">[1]</span>
+          </div>
         </button>
 
         {/* Flip Card Button */}
         <button
           onClick={() => setIsFlipped((prev) => !prev)}
-          className="flex flex-col items-center justify-center gap-1 py-3 px-2 rounded-2xl bg-slate-800 hover:bg-slate-750 active:scale-95 border border-slate-700 text-slate-200 transition-all cursor-pointer shadow-lg"
-          title="Vend kort (Mellemrum)"
+          className="min-h-[58px] min-w-0 flex flex-col items-center justify-center gap-1 py-2 px-1.5 sm:px-2 rounded-2xl bg-gradient-to-b from-slate-800 to-slate-850 hover:from-slate-750 hover:to-slate-800 active:scale-95 border border-slate-700 text-slate-100 transition-all cursor-pointer shadow-lg group"
+          title="Vend kort (Tast [Mellemrum])"
         >
-          <div className="w-7 h-7 rounded-full bg-slate-700 flex items-center justify-center">
+          <div className="w-7 h-7 rounded-full bg-slate-700/80 flex items-center justify-center group-hover:scale-105 transition-transform flex-shrink-0">
             <RotateCw className="w-4 h-4 text-amber-400" />
           </div>
-          <span className="text-xs font-bold">Vend</span>
+          <div className="flex items-center gap-1 min-w-0">
+            <span className="text-xs font-bold font-display truncate">Vend kort</span>
+            <span className="hidden sm:inline text-[9px] text-slate-400 bg-slate-900/60 px-1 rounded flex-shrink-0">[␣]</span>
+          </div>
         </button>
 
         {/* Mastered Button */}
         <button
           onClick={() => handleAnswer(true)}
-          className="flex flex-col items-center justify-center gap-1 py-3 px-2 rounded-2xl bg-emerald-500/15 hover:bg-emerald-500/25 active:scale-95 border border-emerald-500/30 text-emerald-300 transition-all cursor-pointer shadow-lg shadow-emerald-950/30"
-          title="Marker som mestret (Swipe Højre)"
+          className="min-h-[58px] min-w-0 flex flex-col items-center justify-center gap-1 py-2 px-1.5 sm:px-2 rounded-2xl bg-gradient-to-b from-emerald-500/25 to-teal-600/15 hover:from-emerald-500/35 hover:to-teal-600/25 active:scale-95 border border-emerald-500/40 text-emerald-300 transition-all cursor-pointer shadow-lg shadow-emerald-950/40 group"
+          title="Marker som mestret (Tast [2] eller [→])"
         >
-          <div className="w-7 h-7 rounded-full bg-emerald-500/20 flex items-center justify-center">
-            <Check className="w-4 h-4 text-emerald-400" />
+          <div className="w-7 h-7 rounded-full bg-emerald-500/25 flex items-center justify-center group-hover:scale-105 transition-transform flex-shrink-0">
+            <Check className="w-4 h-4 text-emerald-300" />
           </div>
-          <span className="text-xs font-bold">Kan det</span>
+          <div className="flex items-center gap-1 min-w-0">
+            <span className="text-xs font-bold font-display truncate">Kan det</span>
+            <span className="hidden sm:inline text-[9px] text-emerald-400/70 bg-emerald-950/60 px-1 rounded flex-shrink-0">[2]</span>
+          </div>
         </button>
       </div>
     </div>

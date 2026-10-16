@@ -200,7 +200,7 @@ export const CAFSContent: React.FC = () => {
   return (
     <div className="space-y-4">
       {/* Banner */}
-      <div className="bg-gradient-to-br from-cyan-600/20 via-slate-900 to-slate-950 border border-cyan-500/30 rounded-2xl p-4 sm:p-5 shadow-xl relative overflow-hidden">
+      <div className="bg-slate-900/95 border border-cyan-500/30 rounded-2xl p-4 sm:p-5 shadow-xl relative overflow-hidden">
         <div className="flex items-start justify-between gap-3">
           <div>
             <div className="flex items-center gap-2 mb-1.5">

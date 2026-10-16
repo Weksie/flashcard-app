@@ -40,7 +40,7 @@ const ManageQuestionsContent: React.FC<{
   // Add individual card
   const handleAddCard = () => {
     if (!draftQuestion.trim() || !draftAnswer.trim()) {
-      setError('Please provide both a question and an answer.')
+      setError('Udfyld venligst både spørgsmål og svar.')
       return
     }
 
@@ -66,7 +66,7 @@ const ManageQuestionsContent: React.FC<{
   // Parse bulk text
   const handleParseBulk = () => {
     if (!bulkText.trim()) {
-      setError('Please paste question data.')
+      setError('Indsæt venligst spørgsmålsdata.')
       return
     }
 
@@ -77,8 +77,8 @@ const ManageQuestionsContent: React.FC<{
         if (Array.isArray(parsed)) {
           const formatted: Flashcard[] = parsed.map((item, idx) => ({
             id: `card-bulk-${Date.now()}-${idx}`,
-            question: item.question || item.q || 'Untitled Question',
-            answer: item.answer || item.a || 'Untitled Answer',
+            question: item.question || item.q || 'Uden titel',
+            answer: item.answer || item.a || 'Uden svar',
             hint: item.hint || item.h || undefined,
             category: item.category || undefined,
           }))
@@ -101,22 +101,20 @@ const ManageQuestionsContent: React.FC<{
       const trimmed = line.trim()
       if (!trimmed || trimmed.startsWith('#')) return
 
-      // Split by "|" or tab
-      const parts = trimmed.includes('|') ? trimmed.split('|') : trimmed.split('\t')
+      // Split by pipe '|'
+      const parts = trimmed.split('|').map((p) => p.trim())
       if (parts.length >= 2) {
         newParsedCards.push({
           id: `card-bulk-${Date.now()}-${index}`,
-          question: parts[0].trim(),
-          answer: parts[1].trim(),
-          hint: parts[2]?.trim() || undefined,
+          question: parts[0],
+          answer: parts[1],
+          hint: parts[2] || undefined,
         })
       }
     })
 
     if (newParsedCards.length === 0) {
-      setError(
-        'Could not parse cards. Use format: "Question | Answer" on each line.'
-      )
+      setError('Kunne ikke fortolke nogen spørgsmål. Brug formatet: Spørgsmål | Svar | Valgfrit hint')
       return
     }
 
@@ -126,24 +124,20 @@ const ManageQuestionsContent: React.FC<{
     setError(null)
   }
 
-  // Load sample bulk text
   const handleLoadSample = () => {
     setBulkText(
-      `What is the largest ocean on Earth? | Pacific Ocean | Covers more than 30% of the Earth's surface\n` +
-      `How many continents are there? | 7 Continents | Africa, Antarctica, Asia, Europe, North America, Oceania, South America\n` +
-      `Who wrote Romeo and Juliet? | William Shakespeare | English playwright and poet\n` +
-      `What is the boiling point of water in Celsius? | 100°C | At standard atmospheric pressure`
+      `Hvad er tilbageløbssikring? | Ventil der hindrer forurenet vand i at løbe tilbage i drikkevandsnettet. | Beredskabsstyrelsen B-vand\nHvor mange bar yder en standard højtryksslange? | 40 bar nominelt arbejdstryk. | Højtryksudlægning`
     )
   }
 
-  // Save whole deck
   const handleSave = () => {
     if (!title.trim()) {
-      setError('Please provide a deck title.')
+      setError('Angiv venligst en titel til emnesættet.')
       return
     }
+
     if (cards.length === 0) {
-      setError('Please add at least one question.')
+      setError('Tilføj mindst ét spørgsmål til sættet.')
       return
     }
 
@@ -151,15 +145,15 @@ const ManageQuestionsContent: React.FC<{
       updateDeck({
         ...editingDeck,
         title: title.trim(),
-        description: description.trim() || `${cards.length} questions`,
+        description: description.trim() || `${cards.length} spørgsmål`,
         cards,
       })
     } else {
       addCustomDeck({
         title: title.trim(),
-        description: description.trim() || `${cards.length} custom questions`,
+        description: description.trim() || `${cards.length} brugerdefinerede spørgsmål`,
         icon: 'Sparkles',
-        color: 'from-violet-600 to-indigo-500',
+        color: 'from-amber-600 to-orange-500',
         cards,
       })
     }
@@ -168,21 +162,21 @@ const ManageQuestionsContent: React.FC<{
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/75 backdrop-blur-xs p-0 sm:p-4 animate-fadeIn">
-      <div className="bg-slate-900 border border-slate-800 rounded-t-3xl sm:rounded-3xl w-full max-w-md max-h-[92vh] flex flex-col shadow-2xl overflow-hidden">
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-slate-950/85 backdrop-blur-md p-0 sm:p-4 animate-fadeIn">
+      <div className="bg-[#0e1424] border border-slate-750 rounded-t-3xl sm:rounded-3xl w-full max-w-md max-h-[92vh] flex flex-col shadow-2xl overflow-hidden">
         {/* Header */}
-        <div className="p-4 border-b border-slate-800 flex items-center justify-between">
+        <div className="p-4 border-b border-slate-800 flex items-center justify-between bg-slate-900/90">
           <div>
-            <h2 className="text-base font-bold text-white">
-              {editingDeck ? 'Edit Question Deck' : 'Create Question Deck'}
+            <h2 className="text-base font-bold text-white font-display">
+              {editingDeck ? 'Rediger Emnesæt' : 'Opret Nyt Emnesæt'}
             </h2>
-            <p className="text-xs text-slate-400">
-              {cards.length} {cards.length === 1 ? 'question' : 'questions'} added
+            <p className="text-xs text-slate-400 font-medium">
+              {cards.length} {cards.length === 1 ? 'spørgsmål' : 'spørgsmål'} tilføjet
             </p>
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 rounded-full text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+            className="w-10 h-10 flex items-center justify-center rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition-all cursor-pointer active:scale-95"
           >
             <X className="w-5 h-5" />
           </button>
@@ -190,159 +184,159 @@ const ManageQuestionsContent: React.FC<{
 
         {/* Error message */}
         {error && (
-          <div className="mx-4 mt-3 p-2.5 rounded-xl bg-rose-500/15 border border-rose-500/30 text-rose-300 text-xs flex items-center gap-2">
+          <div className="mx-4 mt-3 p-3 rounded-xl bg-rose-500/15 border border-rose-500/30 text-rose-300 text-xs flex items-center gap-2">
             <AlertCircle className="w-4 h-4 flex-shrink-0" />
-            <span>{error}</span>
+            <span className="font-medium">{error}</span>
           </div>
         )}
 
         {/* Body */}
         <div className="flex-1 overflow-y-auto p-4 space-y-4">
           {/* Deck Details */}
-          <div className="space-y-2">
+          <div className="space-y-2.5">
             <div>
-              <label className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
-                Deck Title
+              <label className="text-[11px] font-bold uppercase tracking-wider text-slate-400 font-display">
+                Titel på sæt
               </label>
               <input
                 type="text"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                placeholder="e.g. Biology Exam Prep"
-                className="mt-1 w-full bg-slate-800/80 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white placeholder-slate-500 focus:outline-hidden focus:border-indigo-500"
+                placeholder="fx Eget repetitionssæt"
+                className="mt-1 w-full bg-slate-900 border border-slate-750 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-500 transition-colors"
               />
             </div>
             <div>
-              <label className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
-                Description (optional)
+              <label className="text-[11px] font-bold uppercase tracking-wider text-slate-400 font-display">
+                Beskrivelse (valgfri)
               </label>
               <input
                 type="text"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                placeholder="e.g. Chapter 1-4 definitions"
-                className="mt-1 w-full bg-slate-800/80 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white placeholder-slate-500 focus:outline-hidden focus:border-indigo-500"
+                placeholder="fx Spørgsmål til holdtræning"
+                className="mt-1 w-full bg-slate-900 border border-slate-750 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-500 transition-colors"
               />
             </div>
           </div>
 
           {/* Mode Tabs */}
-          <div className="flex rounded-xl bg-slate-800/70 p-1 border border-slate-750">
+          <div className="flex rounded-2xl bg-slate-900/90 p-1 border border-slate-750">
             <button
               onClick={() => setActiveTab('editor')}
-              className={`flex-1 py-1.5 text-xs font-semibold rounded-lg transition-all ${
+              className={`flex-1 py-2 text-xs font-bold rounded-xl transition-all cursor-pointer font-display ${
                 activeTab === 'editor'
-                  ? 'bg-indigo-600 text-white shadow-xs'
+                  ? 'bg-amber-500 text-slate-950 shadow-sm'
                   : 'text-slate-400 hover:text-white'
               }`}
             >
-              Add Card by Card
+              Enkelt Spørgsmål
             </button>
             <button
               onClick={() => setActiveTab('bulk')}
-              className={`flex-1 py-1.5 text-xs font-semibold rounded-lg transition-all ${
+              className={`flex-1 py-2 text-xs font-bold rounded-xl transition-all cursor-pointer font-display ${
                 activeTab === 'bulk'
-                  ? 'bg-indigo-600 text-white shadow-xs'
+                  ? 'bg-amber-500 text-slate-950 shadow-sm'
                   : 'text-slate-400 hover:text-white'
               }`}
             >
-              Bulk Paste / Import
+              Masseimport (Tekst)
             </button>
           </div>
 
           {/* Tab 1: Single Card Form */}
           {activeTab === 'editor' && (
-            <div className="space-y-3 bg-slate-800/40 p-3 rounded-2xl border border-slate-800">
-              <span className="text-xs font-bold text-slate-300">Add New Card</span>
+            <div className="space-y-3 bg-slate-900/70 p-3.5 rounded-2xl border border-slate-800">
+              <span className="text-xs font-bold text-slate-200 font-display">Tilføj Spørgsmål</span>
               <input
                 type="text"
                 value={draftQuestion}
                 onChange={(e) => setDraftQuestion(e.target.value)}
-                placeholder="Question / Front of card"
-                className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-hidden focus:border-indigo-500"
+                placeholder="Spørgsmål (Forside af kortet)"
+                className="w-full bg-slate-950 border border-slate-750 rounded-xl px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-500 transition-colors"
               />
               <input
                 type="text"
                 value={draftAnswer}
                 onChange={(e) => setDraftAnswer(e.target.value)}
-                placeholder="Answer / Back of card"
-                className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-hidden focus:border-indigo-500"
+                placeholder="Svar (Bagside af kortet)"
+                className="w-full bg-slate-950 border border-slate-750 rounded-xl px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-500 transition-colors"
               />
               <input
                 type="text"
                 value={draftHint}
                 onChange={(e) => setDraftHint(e.target.value)}
-                placeholder="Optional Hint"
-                className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-hidden focus:border-indigo-500"
+                placeholder="Valgfrit stikord / hint"
+                className="w-full bg-slate-950 border border-slate-750 rounded-xl px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-500 transition-colors"
               />
               <button
                 onClick={handleAddCard}
-                className="w-full flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold shadow-md cursor-pointer"
+                className="w-full min-h-[42px] flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 text-xs font-bold shadow-md cursor-pointer active:scale-95 transition-all font-display"
               >
-                <Plus className="w-3.5 h-3.5" />
-                <span>Add Question</span>
+                <Plus className="w-4 h-4" />
+                <span>Tilføj Spørgsmål</span>
               </button>
             </div>
           )}
 
           {/* Tab 2: Bulk Import */}
           {activeTab === 'bulk' && (
-            <div className="space-y-2">
+            <div className="space-y-2.5">
               <div className="flex items-center justify-between">
-                <label className="text-xs font-semibold text-slate-400">
-                  Paste "Question | Answer | Hint" lines:
+                <label className="text-xs font-semibold text-slate-400 font-display">
+                  Format: "Spørgsmål | Svar | Valgfrit hint"
                 </label>
                 <button
                   onClick={handleLoadSample}
-                  className="text-[11px] text-indigo-400 hover:underline"
+                  className="text-[11px] text-amber-400 hover:underline font-medium cursor-pointer"
                 >
-                  Load Sample
+                  Indsæt eksempel
                 </button>
               </div>
               <textarea
                 rows={6}
                 value={bulkText}
                 onChange={(e) => setBulkText(e.target.value)}
-                placeholder="Question 1 | Answer 1&#10;Question 2 | Answer 2 | Optional hint"
-                className="w-full bg-slate-800/80 border border-slate-700 rounded-xl p-3 text-xs text-white placeholder-slate-500 font-mono focus:outline-hidden focus:border-indigo-500"
+                placeholder="Spørgsmål 1 | Svar 1&#10;Spørgsmål 2 | Svar 2 | Valgfrit hint"
+                className="w-full bg-slate-950 border border-slate-750 rounded-xl p-3 text-xs text-white placeholder-slate-500 font-mono focus:outline-none focus:border-amber-500 transition-colors"
               />
               <button
                 onClick={handleParseBulk}
-                className="w-full flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold shadow-md cursor-pointer"
+                className="w-full min-h-[42px] flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 text-xs font-bold shadow-md cursor-pointer active:scale-95 transition-all font-display"
               >
-                <FileText className="w-3.5 h-3.5" />
-                <span>Parse & Add Questions</span>
+                <FileText className="w-4 h-4" />
+                <span>Fortolk & Tilføj</span>
               </button>
             </div>
           )}
 
           {/* Card List in Deck */}
           <div>
-            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">
-              Cards in this Deck ({cards.length})
+            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2 font-display">
+              Kort i dette sæt ({cards.length})
             </h4>
             {cards.length === 0 ? (
-              <p className="text-xs text-slate-500 italic py-2">No cards added yet.</p>
+              <p className="text-xs text-slate-500 italic py-2">Ingen spørgsmål tilføjet endnu.</p>
             ) : (
               <div className="space-y-2 max-h-48 overflow-y-auto pr-1">
                 {cards.map((c, i) => (
                   <div
                     key={c.id}
-                    className="p-2.5 rounded-xl bg-slate-800/60 border border-slate-750 flex items-start justify-between gap-2"
+                    className="p-3 rounded-xl bg-slate-900 border border-slate-800 flex items-start justify-between gap-2 shadow-sm"
                   >
                     <div className="min-w-0 flex-1">
                       <div className="flex items-center gap-1.5">
-                        <span className="text-[10px] font-bold text-indigo-400">#{i + 1}</span>
+                        <span className="text-[10px] font-bold text-amber-400 font-mono">#{i + 1}</span>
                         <p className="text-xs font-semibold text-white truncate">{c.question}</p>
                       </div>
                       <p className="text-[11px] text-slate-400 truncate mt-0.5">{c.answer}</p>
                     </div>
                     <button
                       onClick={() => handleRemoveCard(c.id)}
-                      className="text-slate-400 hover:text-rose-400 p-1"
-                      title="Remove card"
+                      className="text-slate-400 hover:text-rose-400 p-1.5 rounded-lg hover:bg-slate-800 transition-colors cursor-pointer"
+                      title="Fjern kort"
                     >
-                      <Trash2 className="w-3.5 h-3.5" />
+                      <Trash2 className="w-4 h-4" />
                     </button>
                   </div>
                 ))}
@@ -352,19 +346,19 @@ const ManageQuestionsContent: React.FC<{
         </div>
 
         {/* Modal Footer */}
-        <div className="p-4 border-t border-slate-800 flex items-center gap-2 bg-slate-900/90">
+        <div className="p-3.5 border-t border-slate-800 flex items-center gap-2.5 bg-slate-900/95">
           <button
             onClick={onClose}
-            className="flex-1 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-750 text-slate-300 text-xs font-semibold cursor-pointer"
+            className="flex-1 min-h-[42px] py-2.5 rounded-xl bg-slate-800 hover:bg-slate-750 text-slate-300 text-xs font-semibold cursor-pointer active:scale-95 transition-all"
           >
-            Cancel
+            Annuller
           </button>
           <button
             onClick={handleSave}
-            className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold shadow-lg shadow-emerald-600/20 cursor-pointer"
+            className="flex-1 min-h-[42px] flex items-center justify-center gap-1.5 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-xs font-bold shadow-lg shadow-emerald-600/20 cursor-pointer active:scale-95 transition-all font-display"
           >
             <Check className="w-4 h-4" />
-            <span>Save Deck</span>
+            <span>Gem Emnesæt</span>
           </button>
         </div>
       </div>

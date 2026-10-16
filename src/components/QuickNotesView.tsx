@@ -189,7 +189,7 @@ const HT_TASKS: RoleTask[] = [
     roleId: 'nr2',
     hvem: '2.er:',
     hvemSub: 'Røgdykkermakker',
-    materiel: 'â€”',
+    materiel: '—',
     hvad: 'Udlægger slangen, medvirker ved eventuel ophaling.',
     detail: 'Sikrer at slangen løber frit uden knæk og følger nr. 1 tæt som røgdykkermakker.',
     color: 'blue',
@@ -198,7 +198,7 @@ const HT_TASKS: RoleTask[] = [
     roleId: 'nr3',
     hvem: '3.er:',
     hvemSub: 'Hjælper',
-    materiel: 'â€”',
+    materiel: '—',
     hvad: 'Hjælper med slangeudlægning, går til lederen.',
     detail: 'Trækker slange af tromlen for at aflaste røgdykkerne og melder sig derefter straks til lederen.',
     color: 'emerald',
@@ -221,7 +221,7 @@ const HT_TASKS: RoleTask[] = [
     roleId: 'mp',
     hvem: 'MP:',
     hvemSub: 'Motorpasser / Chauffør',
-    materiel: 'â€”',
+    materiel: '—',
     hvad: 'Betjener pumpen.',
     detail: 'Starter HT-pumpen, åbner for afgang og overvåger vandbeholdning samt pumpetryk.',
     color: 'cyan',
@@ -289,7 +289,7 @@ const BC_TASKS: RoleTask[] = [
     roleId: 'mp',
     hvem: 'MP:',
     hvemSub: 'Motorpasser / Chauffør',
-    materiel: 'â€”',
+    materiel: '—',
     hvad: 'Betjener pumpen, går klar til fødeslangeudlægning',
     detail: 'Betjener pumpetrykket for B-afgangen og går sprøjtens fødeindtag klar til modtagelse af vand fra brandhanen.',
     color: 'cyan',
@@ -308,16 +308,16 @@ export const QuickNotesView: React.FC = () => {
   return (
     <div className="flex-1 flex flex-col min-h-0 overflow-y-auto px-4 pt-safe pb-safe max-w-md mx-auto w-full text-slate-100">
       {/* Top Header */}
-      <header className="pt-2 pb-3 flex items-center justify-between sticky top-0 bg-slate-950/95 backdrop-blur-md z-20 -mx-4 px-4 border-b border-slate-900/80 mb-3">
+      <header className="pt-2.5 pb-2.5 flex items-center justify-between sticky top-0 bg-[#0b0f19]/90 backdrop-blur-md z-20 -mx-4 px-4 border-b border-slate-800/80 mb-3">
         <div className="flex items-center gap-2">
           <button
             onClick={toggleSidebar}
-            className="flex items-center gap-1.5 px-3 py-2 text-xs font-bold text-amber-300 hover:text-white bg-slate-900/90 hover:bg-slate-850 border border-amber-500/40 hover:border-amber-400 rounded-xl shadow-lg shadow-amber-500/10 transition-all active:scale-95 cursor-pointer flex-shrink-0 group"
+            className="flex items-center gap-1.5 px-3 py-2 text-xs font-bold text-amber-300 hover:text-white bg-slate-900/90 hover:bg-slate-800 border border-amber-500/40 hover:border-amber-400 rounded-xl shadow-md transition-all active:scale-95 cursor-pointer flex-shrink-0 min-h-[40px]"
             title="Åbn emne-menu"
             aria-label="Åbn emne-menu"
           >
-            <Menu className="w-4 h-4 text-amber-400 group-hover:scale-110 transition-transform" />
-            <span>Menu</span>
+            <Menu className="w-4 h-4 text-amber-400" />
+            <span className="font-semibold">Menu</span>
           </button>
 
           {selectedNoteId ? (
@@ -326,16 +326,16 @@ export const QuickNotesView: React.FC = () => {
                 setSelectedNoteId(null)
                 setHighlightedRoleId(null)
               }}
-              className="flex items-center gap-1 text-xs text-amber-400 hover:text-amber-300 transition-colors py-1 px-2 rounded-lg bg-slate-900 border border-slate-800 hover:border-amber-500/30 cursor-pointer"
+              className="flex items-center gap-1.5 text-xs font-semibold text-amber-300 hover:text-white transition-all py-1.5 px-2.5 rounded-xl bg-slate-900 border border-slate-800 hover:border-amber-500/30 cursor-pointer min-h-[40px] active:scale-95"
               title="Tilbage til oversigten"
             >
-              <ChevronLeft className="w-4 h-4" />
-              <span>Valgmenu</span>
+              <ChevronLeft className="w-4 h-4 text-amber-400" />
+              <span>Emneoversigt</span>
             </button>
           ) : (
             <button
               onClick={() => setScreen('decks')}
-              className="flex items-center gap-1 text-xs text-slate-400 hover:text-amber-400 transition-colors py-1 px-1.5 rounded-lg cursor-pointer"
+              className="flex items-center gap-1.5 text-xs font-semibold text-slate-300 hover:text-amber-300 transition-colors py-1.5 px-2 rounded-xl cursor-pointer min-h-[40px]"
               title="Tilbage til spørgsmål"
             >
               <ChevronLeft className="w-4 h-4" />
@@ -346,12 +346,12 @@ export const QuickNotesView: React.FC = () => {
 
         <div className="flex items-center gap-1.5">
           <div className="text-right">
-            <div className="text-xs font-bold text-white flex items-center gap-1 justify-end">
+            <div className="text-xs font-bold text-white flex items-center gap-1 justify-end font-display">
               <FileText className="w-3.5 h-3.5 text-amber-400" />
               <span>Hurtige Noter</span>
             </div>
-            <p className="text-[10px] text-slate-400">
-              {selectedNoteId ? activeNote.title : 'Taktik & Udlægninger'}
+            <p className="text-[10px] text-slate-400 font-medium truncate max-w-[150px]">
+              {selectedNoteId ? activeNote.title : 'Taktik & Opslag'}
             </p>
           </div>
         </div>
@@ -361,23 +361,23 @@ export const QuickNotesView: React.FC = () => {
       {!selectedNoteId ? (
         <div className="space-y-4 pb-8">
           {/* Welcome / Header Banner */}
-          <div className="bg-gradient-to-br from-amber-500/15 via-slate-900 to-slate-900/90 border border-amber-500/30 rounded-2xl p-4 shadow-xl relative overflow-hidden">
-            <div className="flex items-center gap-2 mb-1.5">
-              <span className="text-[10px] font-bold text-amber-400 uppercase tracking-widest bg-amber-500/15 border border-amber-500/30 px-2 py-0.5 rounded-md">
+          <div className="bg-slate-900/95 border border-amber-500/30 rounded-3xl p-4 sm:p-5 shadow-xl relative overflow-hidden">
+            <div className="flex items-center gap-2 mb-2">
+              <span className="text-[10px] font-bold text-amber-300 uppercase tracking-widest bg-amber-500/20 border border-amber-500/30 px-2.5 py-0.5 rounded-full font-display">
                 Taktisk Bibliotek
               </span>
-              <span className="text-[10px] text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-md font-medium">
-                {AVAILABLE_NOTES.filter((n) => n.isAvailable).length} aktive emner
+              <span className="text-[10px] text-emerald-300 bg-emerald-500/15 border border-emerald-500/25 px-2.5 py-0.5 rounded-full font-semibold">
+                {AVAILABLE_NOTES.filter((n) => n.isAvailable).length} aktive opslag
               </span>
             </div>
-            <h1 className="text-lg font-bold text-white tracking-tight">
+            <h1 className="text-lg font-extrabold text-white tracking-tight font-display">
               Hurtige Noter & Udlægninger
             </h1>
-            <p className="text-xs text-slate-300 mt-1.5 leading-relaxed">
+            <p className="text-xs text-slate-300 mt-1.5 leading-relaxed font-medium">
               Vælg et emne herunder for at se detaljeret bemanding, materielopgaver og taktiske skitser til brug ved prøven og i felten.
             </p>
-            <p className="text-xs text-red-300 mt-1.5 leading-relaxed">
-              Vær opmærksom på at der kan forkomme fejl i nedenstående materiale, og at der ikke nødvendigvis står alt du skal bruge til din eksamen. Dette er ikke en officiel App, men blot et hjælpe middel.
+            <p className="text-[11px] text-rose-300/90 mt-2 bg-rose-500/10 border border-rose-500/20 p-2.5 rounded-xl leading-relaxed">
+              Vær opmærksom på at dette er et uofficielt supplerende hjælpemiddel til uddannelsen. Følg altid instruktørens og Beredskabsstyrelsens gældende vejledninger.
             </p>
           </div>
 
@@ -531,7 +531,7 @@ export const QuickNotesView: React.FC = () => {
           {selectedNoteId === 'ht-udlaegning' || selectedNoteId === 'bc-udlaegning' ? (
             <div className="space-y-4">
               {/* Note Banner */}
-              <div className="bg-gradient-to-br from-amber-500/15 via-slate-900 to-slate-900/90 border border-amber-500/30 rounded-2xl p-4 shadow-xl relative overflow-hidden">
+              <div className="bg-slate-900/95 border border-amber-500/30 rounded-2xl p-4 shadow-xl relative overflow-hidden">
                 <div className="flex items-start justify-between gap-3">
                   <div>
                     <span className="inline-block text-[10px] font-bold text-amber-400 uppercase tracking-widest bg-amber-500/15 border border-amber-500/30 px-2 py-0.5 rounded-md mb-1.5">
@@ -657,12 +657,12 @@ export const QuickNotesView: React.FC = () => {
                                     </div>
                                   )}
                                 </div>
-                              ) : task.materiel !== 'â€”' ? (
+                              ) : task.materiel !== '—' ? (
                                 <span className="inline-block px-1.5 py-0.5 text-[11px] font-medium rounded bg-slate-800 text-slate-300 border border-slate-700">
                                   {task.materiel}
                                 </span>
                               ) : (
-                                <span className="text-slate-600 font-mono pl-1">â€”</span>
+                                <span className="text-slate-600 font-mono pl-1">—</span>
                               )}
                             </td>
 
@@ -697,8 +697,8 @@ export const QuickNotesView: React.FC = () => {
                     )}
                     <h2 className="text-xs font-bold text-white uppercase tracking-wider">
                       {isBc
-                        ? 'Fra sprøjten â€“ B/C slangen ud'
-                        : 'Fra sprøjten â€“ Højtryksslangen ud'}
+                        ? 'Fra sprøjten – B/C slangen ud'
+                        : 'Fra sprøjten – Højtryksslangen ud'}
                     </h2>
                   </div>
                   <span className="text-[10px] text-slate-400 bg-slate-800 px-2 py-0.5 rounded-full">
@@ -951,7 +951,7 @@ export const QuickNotesView: React.FC = () => {
 
                       {/* Direction of Attack arrow note */}
                       <text x="540" y="140" fill="#f59e0b" fontSize="9" fontWeight="bold" textAnchor="middle">
-                        Mod ilden âž”
+                        Mod ilden ➔
                       </text>
 
                       {/* Node 2 Label & Interaction (along C-slange serpentine) */}
@@ -1009,7 +1009,7 @@ export const QuickNotesView: React.FC = () => {
                         strokeDasharray="5 3"
                       />
                       <text x="440" y="268" fill="#94a3b8" fontSize="10" fontStyle="italic" textAnchor="start">
-                        (evt. 3. og 4. â€“ ved andet udløb)
+                        (evt. 3. og 4. – ved andet udløb)
                       </text>
                     </svg>
                   ) : (
@@ -1257,7 +1257,7 @@ export const QuickNotesView: React.FC = () => {
 
                       {/* Direction of Attack arrow note */}
                       <text x="515" y="118" fill="#f59e0b" fontSize="9" fontWeight="bold" textAnchor="middle">
-                        Mod ilden âž”
+                        Mod ilden ➔
                       </text>
                     </svg>
                   )}
@@ -1275,7 +1275,7 @@ export const QuickNotesView: React.FC = () => {
                             <span className="font-bold text-amber-300">
                               {role.hvem} {role.hvemSub}
                             </span>
-                            {role.materiel !== 'â€”' && (
+                            {role.materiel !== '—' && (
                               <span className="text-[10px] bg-amber-500/20 text-amber-200 px-1.5 py-0.5 rounded font-semibold">
                                 Materiel: {role.materiel}
                               </span>

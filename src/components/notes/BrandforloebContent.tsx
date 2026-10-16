@@ -141,7 +141,7 @@ export const BrandforloebContent: React.FC = () => {
   return (
     <div className="space-y-4">
       {/* Banner */}
-      <div className="bg-gradient-to-br from-rose-500/15 via-slate-900 to-slate-900/90 border border-rose-500/30 rounded-2xl p-4 shadow-xl relative overflow-hidden">
+      <div className="bg-slate-900/95 border border-rose-500/30 rounded-2xl p-4 shadow-xl relative overflow-hidden">
         <div className="flex items-start justify-between gap-3">
           <div>
             <span className="inline-block text-[10px] font-bold text-rose-400 uppercase tracking-widest bg-rose-500/15 border border-rose-500/30 px-2 py-0.5 rounded-md mb-1.5">
